@@ -1,9 +1,8 @@
-import { Box, Group, Input, Stack, Text } from '@mantine/core';
+import { Box, Group, Input, Stack } from '@mantine/core';
 import { useEditorStore } from '../hooks/useEditorStore';
 import { type Dimensions } from '../../engine/types/SpriteData';
 import { SafeNumberInput } from './input/SafeNumberInput';
 import { SafeTextInput } from './input/SafeTextInput';
-import { FakeLabel } from './input/FakeLabel';
 
 export function SpriteEdit() {
   const spriteData = useEditorStore((state) => state.spriteData);

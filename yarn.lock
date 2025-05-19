@@ -1698,6 +1698,11 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+mantine-contextmenu@^7.17.1:
+  version "7.17.1"
+  resolved "https://registry.yarnpkg.com/mantine-contextmenu/-/mantine-contextmenu-7.17.1.tgz#0675e713cca5f72c8dd5b8f8639dc9f9e117dacf"
+  integrity sha512-+Xbo/IiIdrlIOw/0c5i7oNf7a55C+jxZArcf/dDrOyV7MOLbnqRe1oPjPki9LCaQhuG/7YPN6pJzVsu2b8JiHA==
+
 math-intrinsics@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/math-intrinsics/-/math-intrinsics-1.1.0.tgz"

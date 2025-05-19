@@ -1,17 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { initEditorScene } from './initEditorScene';
 import { useEditorStore } from './hooks/useEditorStore';
-import {
-  AppShell,
-  Burger,
-  Divider,
-  Group,
-  Box,
-  ScrollArea,
-  Skeleton,
-  Stack,
-  Title,
-} from '@mantine/core';
+import { AppShell, Burger, Divider, Group, Box, ScrollArea, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Split } from '@gfazioli/mantine-split-pane';
 import '@gfazioli/mantine-split-pane/styles.css';
@@ -47,7 +37,7 @@ export default function EditorApp() {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p={0}>
-        <ScrollArea p='xs'>
+        <ScrollArea p='xs' scrollbars='y'>
           <Stack bg='var(--mantine-color-body)' align='stretch' justify='flex-start' gap='md'>
             <SpriteEdit />
             <Divider my='md' />
@@ -63,11 +53,11 @@ export default function EditorApp() {
           size='lg'
           style={{ height: '100%', width: '100%' }}
         >
-          <Split.Pane minHeight='30%' initialHeight='50%'>
+          <Split.Pane minHeight='30%' initialHeight='50%' style={{ zIndex: 1 }}>
             <View />
           </Split.Pane>
           <Split.Resizer m={0} size='md' bg='var(--app-shell-border-color)' />
-          <Split.Pane grow minHeight='10%'>
+          <Split.Pane grow minHeight='10%' style={{ zIndex: 2 }}>
             <Timeline />
           </Split.Pane>
         </Split>

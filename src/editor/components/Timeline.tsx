@@ -1,12 +1,6 @@
-import { Box, Group, Input, Pagination, Select } from '@mantine/core';
+import { Box, Group, Input, Select } from '@mantine/core';
 import { APP_BORDER_STYLE } from '../utils/styles';
-import {
-  IconArrowBarToLeft,
-  IconArrowBarToRight,
-  IconArrowLeft,
-  IconArrowRight,
-  IconGripHorizontal,
-} from '@tabler/icons-react';
+import TimelineBrowser from './timeline/TimelineBrowser';
 
 export function Timeline() {
   return (
@@ -29,18 +23,7 @@ export function Timeline() {
             <Input.Label htmlFor='frame-control' size={'xs'}>
               Frames
             </Input.Label>
-            <Pagination
-              withEdges
-              nextIcon={IconArrowRight}
-              previousIcon={IconArrowLeft}
-              firstIcon={IconArrowBarToLeft}
-              lastIcon={IconArrowBarToRight}
-              dotsIcon={IconGripHorizontal}
-              total={6}
-              defaultValue={1}
-              size={'sm'}
-              gap={2}
-            />
+            <TimelineBrowser />
           </Group>
         </Box>
       </Group>
