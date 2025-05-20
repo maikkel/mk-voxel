@@ -11,17 +11,9 @@ import { PaletteEditor } from './components/PaletteEdit';
 import { Timeline } from './components/Timeline';
 
 export default function EditorApp() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
   const spriteData = useEditorStore((state) => state.spriteData ?? undefined);
   const setSpriteData = useEditorStore((state) => state.setSpriteData);
   const updatePalette = useEditorStore((state) => state.updatePalette);
-
-  useEffect(() => {
-    if (canvasRef.current) {
-      initEditorScene(canvasRef.current);
-    }
-  }, []);
 
   const [opened, { toggle }] = useDisclosure();
   return (

@@ -1,4 +1,4 @@
-import { Box, Group, Input, Stack } from '@mantine/core';
+import { Box, Group, Input, Stack, Text } from '@mantine/core';
 import { useEditorStore } from '../hooks/useEditorStore';
 import { type Dimensions } from '../../engine/types/SpriteData';
 import { SafeNumberInput } from './input/SafeNumberInput';
@@ -37,6 +37,8 @@ export function SpriteEdit() {
     });
   };
 
+  const totalVoxels = spriteData.dimensions.x * spriteData.dimensions.y * spriteData.dimensions.z;
+
   return (
     <Stack>
       <Group grow gap='sm'>
@@ -49,7 +51,7 @@ export function SpriteEdit() {
         />
       </Group>
       <Box>
-        <Input.Label size={'xs'}>Sprite Dimensions</Input.Label>
+        <Input.Label size={'xs'}>Sprite Dimensions ()</Input.Label>
         <Group grow gap='sm'>
           <SafeNumberInput
             leftSection={'X:'}
@@ -76,6 +78,9 @@ export function SpriteEdit() {
             size={'xs'}
           />
         </Group>
+        <Text size='xs' c={'#999'}>
+          Voxels Per Frame: {totalVoxels}
+        </Text>
       </Box>
 
       <SafeNumberInput

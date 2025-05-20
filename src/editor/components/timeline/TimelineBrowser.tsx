@@ -68,35 +68,35 @@ function TimelineBrowser() {
             id={'timeline-tooltip'}
             onMouseEnter={onTooltipEnter}
             onMouseLeave={onTooltipLeave}
-            style={{ top: pos.y, left: pos.x, position: 'absolute' }}
+            style={{ top: pos.y, left: pos.x }}
           >
             <div className={'left'}>
-              <CompactButton
-                icon={<IconCopy size={16} />}
-                tooltip='Duplicate Frame'
-                tooltipPosition='left'
-                onClick={handleDuplicate}
-              />
               <CompactButton
                 icon={<IconPlus size={16} />}
                 tooltip='Add Empty Frame'
                 tooltipPosition='left'
                 onClick={handleAdd}
+              />
+              <CompactButton
+                icon={<IconCopy size={16} />}
+                tooltip='Duplicate Frame'
+                tooltipPosition='left'
+                onClick={handleDuplicate}
               />
               <div className={'pointer'}></div>
             </div>
             <div className={'right'}>
               <CompactButton
-                icon={<IconCopy size={16} />}
-                tooltip='Duplicate Frame'
-                tooltipPosition='right'
-                onClick={handleDuplicate}
-              />
-              <CompactButton
                 icon={<IconPlus size={16} />}
                 tooltip='Add Empty Frame'
                 tooltipPosition='right'
                 onClick={handleAdd}
+              />
+              <CompactButton
+                icon={<IconCopy size={16} />}
+                tooltip='Duplicate Frame'
+                tooltipPosition='right'
+                onClick={handleDuplicate}
               />
               <div className={'pointer'}></div>
             </div>
