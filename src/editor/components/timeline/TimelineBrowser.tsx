@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { ActionIcon, Pagination, Portal } from '@mantine/core';
+import { ActionIcon, Pagination, Portal, Tooltip } from '@mantine/core';
 import {
   IconArrowBarToLeft,
   IconArrowBarToRight,
@@ -13,12 +13,14 @@ import {
 import { useTimeout } from '@mantine/hooks';
 
 import './timelineBrowser.scss';
+import CompactButton from '../input/CompactButton';
 
 function TimelineBrowser() {
   const [opened, setOpened] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const isOverTrigger = useRef<boolean>(false);
   const isOverTooltip = useRef<boolean>(false);
+  const page = useRef<number>(1);
 
   const { start: startTooltipTimeout, clear: clearTooltipTimeout } = useTimeout(() => {
     setOpened(isOverTrigger.current || isOverTooltip.current);
@@ -48,6 +50,16 @@ function TimelineBrowser() {
     isOverTooltip.current = false;
   };
 
+  const handleDuplicate = () => {
+    console.log('duplicate', page.current);
+  };
+  const handleAdd = () => {
+    console.log('add', page.current);
+  };
+  const handleDelete = () => {
+    console.log('delete', page.current);
+  };
+
   return (
     <>
       {opened && (
@@ -59,27 +71,44 @@ function TimelineBrowser() {
             style={{ top: pos.y, left: pos.x, position: 'absolute' }}
           >
             <div className={'left'}>
-              <ActionIcon className={'frameAction'} variant={'filled'} color='blue' size='sm'>
-                <IconCopy size={16} />
-              </ActionIcon>
-              <ActionIcon className={'frameAction'} variant={'filled'} color='blue' size='sm'>
-                <IconPlus size={16} />
-              </ActionIcon>
+              <CompactButton
+                icon={<IconCopy size={16} />}
+                tooltip='Duplicate Frame'
+                tooltipPosition='left'
+                onClick={handleDuplicate}
+              />
+              <CompactButton
+                icon={<IconPlus size={16} />}
+                tooltip='Add Empty Frame'
+                tooltipPosition='left'
+                onClick={handleAdd}
+              />
               <div className={'pointer'}></div>
             </div>
             <div className={'right'}>
-              <ActionIcon className={'frameAction'} variant={'filled'} color='blue' size='sm'>
-                <IconCopy size={16} />
-              </ActionIcon>
-              <ActionIcon className={'frameAction'} variant={'filled'} color='blue' size='sm'>
-                <IconPlus size={16} />
-              </ActionIcon>
+              <CompactButton
+                icon={<IconCopy size={16} />}
+                tooltip='Duplicate Frame'
+                tooltipPosition='right'
+                onClick={handleDuplicate}
+              />
+              <CompactButton
+                icon={<IconPlus size={16} />}
+                tooltip='Add Empty Frame'
+                tooltipPosition='right'
+                onClick={handleAdd}
+              />
               <div className={'pointer'}></div>
             </div>
 
-            <ActionIcon className={'frameAction delete'} variant={'filled'} color='red' size='sm'>
-              <IconTrash size={16} />
-            </ActionIcon>
+            <CompactButton
+              icon={<IconTrash size={16} />}
+              tooltip='Delete Frame'
+              tooltipPosition='bottom'
+              color='red'
+              className={'delete'}
+              onClick={handleDelete}
+            />
           </div>
         </Portal>
       )}
@@ -95,10 +124,13 @@ function TimelineBrowser() {
         defaultValue={1}
         size='md'
         gap={2}
-        getItemProps={(page) => ({
+        getItemProps={(hoverPage) => ({
           style: { position: 'relative' },
           onMouseLeave: onTriggerLeave,
-          onMouseOver: onTriggerEnter,
+          onMouseOver: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            page.current = hoverPage;
+            onTriggerEnter(e);
+          },
         })}
       />
     </>
