@@ -51,7 +51,7 @@ export function SpriteEdit() {
         />
       </Group>
       <Box>
-        <Input.Label size={'xs'}>Sprite Dimensions ()</Input.Label>
+        <Input.Label size={'xs'}>Sprite Dimensions</Input.Label>
         <Group grow gap='sm'>
           <SafeNumberInput
             leftSection={'X:'}
