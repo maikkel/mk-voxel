@@ -8,7 +8,9 @@ const initialSpriteData = engine.createSprite(3, 3, 3, 'new_sprite');
 
 interface EditorStore {
   spriteData: SpriteData | null;
+
   setSpriteData: (data: SpriteData) => void;
+
   updatePalette: (newPalette: Palette) => void;
   resizeSprite: (newDimensions: Dimensions) => void;
 
@@ -17,6 +19,9 @@ interface EditorStore {
 
   currentFrameIndex: number;
   setCurrentFrameIndex: (index: number) => void;
+
+  currentYIndex: number;
+  setCurrentYIndex: (index: number) => void;
 }
 
 export const useEditorStore = create<EditorStore>()(
@@ -43,6 +48,9 @@ export const useEditorStore = create<EditorStore>()(
 
       currentFrameIndex: 0,
       setCurrentFrameIndex: (index) => set({ currentFrameIndex: index }),
+
+      currentYIndex: 0,
+      setCurrentYIndex: (index) => set({ currentYIndex: index }),
     }),
     {
       name: 'editor-store', // 🔑 localStorage key
