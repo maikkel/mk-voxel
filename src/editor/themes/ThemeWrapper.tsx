@@ -1,7 +1,7 @@
 import { MantineProvider } from '@mantine/core';
 import { useEditorStore } from '../store/useEditorStore';
 
-export function ThemeWrapper({ children }: { children: React.ReactNode }) {
+export default function ThemeWrapper({ children }: { children: React.ReactNode }) {
   const theme = useEditorStore((s) => s.currentTheme);
 
   return (

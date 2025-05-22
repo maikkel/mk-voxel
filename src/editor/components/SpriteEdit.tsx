@@ -1,10 +1,10 @@
 import { Group, Stack } from '@mantine/core';
 import { useEditorStore } from '../store/useEditorStore';
-import { SafeNumberInput } from './input/SafeNumberInput';
-import { SafeTextInput } from './input/SafeTextInput';
-import { DimsEdit } from './spriteEdit/DimsEdit';
+import SafeNumberInput from './input/SafeNumberInput';
+import SafeTextInput from './input/SafeTextInput';
+import DimsEdit from './spriteEdit/DimsEdit';
 
-export function SpriteEdit() {
+export default function SpriteEdit() {
   const spriteData = useEditorStore((state) => state.spriteData);
   const setSpriteData = useEditorStore((state) => state.setSpriteData); // still used for frameTime
 

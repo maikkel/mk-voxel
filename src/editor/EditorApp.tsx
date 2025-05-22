@@ -4,10 +4,10 @@ import { useDisclosure } from '@mantine/hooks';
 import { Split } from '@gfazioli/mantine-split-pane';
 import '@gfazioli/mantine-split-pane/styles.css';
 import View from './components/View';
-import { SpriteEdit } from './components/SpriteEdit';
-import { PaletteEditor } from './components/PaletteEdit';
+import SpriteEdit from './components/SpriteEdit';
+import PaletteEdit from './components/PaletteEdit';
 import { Timeline } from './components/Timeline';
-import { Header } from './components/Header';
+import Header from './components/Header';
 
 export default function EditorApp() {
   const [opened, { toggle }] = useDisclosure();
@@ -29,7 +29,7 @@ export default function EditorApp() {
           <Stack bg='var(--mantine-color-body)' align='stretch' justify='flex-start' gap='md'>
             <SpriteEdit />
             <Divider my='md' />
-            <PaletteEditor />
+            <PaletteEdit />
           </Stack>
         </ScrollArea>
       </AppShell.Navbar>

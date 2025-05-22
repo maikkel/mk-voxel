@@ -4,7 +4,7 @@ type SafeNumberInputProps = Omit<NumberInputProps, 'onChange'> & {
   onChange: (value: number) => void;
 };
 
-export function SafeNumberInput({ onChange, ...props }: SafeNumberInputProps) {
+export default function SafeNumberInput({ onChange, ...props }: SafeNumberInputProps) {
   return (
     <NumberInput
       {...props}

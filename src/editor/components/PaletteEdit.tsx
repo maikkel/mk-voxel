@@ -13,7 +13,7 @@ import { IconPlus, IconTrash, IconSunLowFilled } from '@tabler/icons-react';
 import type { MaterialKey } from '../../engine/types/SpriteData';
 import { useEditorStore } from '../store/useEditorStore';
 
-export const PaletteEditor = () => {
+export default function PaletteEdit() {
   const { palette } = useEditorStore((state) => state.spriteData);
   const updatePalette = useEditorStore((state) => state.updatePalette);
 
@@ -116,4 +116,4 @@ export const PaletteEditor = () => {
       </Stack>
     </Stack>
   );
-};
+}

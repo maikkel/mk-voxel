@@ -15,7 +15,7 @@ import { useTimeout } from '@mantine/hooks';
 import './frameBrowser.scss';
 import CompactButton from '../input/CompactButton';
 
-function FrameBrowser() {
+export default function FrameBrowser() {
   const [opened, setOpened] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const isOverTrigger = useRef<boolean>(false);
@@ -136,5 +136,3 @@ function FrameBrowser() {
     </>
   );
 }
-
-export default FrameBrowser;

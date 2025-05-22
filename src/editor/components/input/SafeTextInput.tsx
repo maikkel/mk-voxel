@@ -6,7 +6,7 @@ type SafeTextInputProps = Omit<TextInputProps, 'onChange'> & {
   allowSpace?: boolean;
 };
 
-export function SafeTextInput({
+export default function SafeTextInput({
   value,
   onChange,
   allowSpace = true,

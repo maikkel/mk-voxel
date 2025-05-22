@@ -2,10 +2,10 @@ import { Box, Group, Input, Text } from '@mantine/core';
 import { IconCheck, IconRestore } from '@tabler/icons-react';
 import { useMemo, useState } from 'react';
 import { useEditorStore } from '../../store/useEditorStore';
-import { SafeNumberInput } from '../input/SafeNumberInput';
+import SafeNumberInput from '../input/SafeNumberInput';
 import CompactButton from '../input/CompactButton';
 
-export function DimsEdit() {
+export default function DimsEdit() {
   const spriteData = useEditorStore((state) => state.spriteData);
   const resizeSprite = useEditorStore((state) => state.resizeSprite);
 
