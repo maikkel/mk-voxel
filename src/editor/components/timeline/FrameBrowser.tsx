@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { ActionIcon, Pagination, Portal, Tooltip } from '@mantine/core';
+import { Pagination, Portal } from '@mantine/core';
 import {
   IconArrowBarToLeft,
   IconArrowBarToRight,
@@ -12,10 +12,10 @@ import {
 } from '@tabler/icons-react';
 import { useTimeout } from '@mantine/hooks';
 
-import './timelineBrowser.scss';
+import './frameBrowser.scss';
 import CompactButton from '../input/CompactButton';
 
-function TimelineBrowser() {
+function FrameBrowser() {
   const [opened, setOpened] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const isOverTrigger = useRef<boolean>(false);
@@ -137,4 +137,4 @@ function TimelineBrowser() {
   );
 }
 
-export default TimelineBrowser;
+export default FrameBrowser;

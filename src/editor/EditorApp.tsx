@@ -1,7 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { initEditorScene } from './initEditorScene';
-import { useEditorStore } from './hooks/useEditorStore';
-import { AppShell, Burger, Divider, Group, Box, ScrollArea, Stack } from '@mantine/core';
+import React from 'react';
+import { AppShell, Box, Burger, Divider, Group, ScrollArea, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Split } from '@gfazioli/mantine-split-pane';
 import '@gfazioli/mantine-split-pane/styles.css';
@@ -9,12 +7,9 @@ import View from './components/View';
 import { SpriteEdit } from './components/SpriteEdit';
 import { PaletteEditor } from './components/PaletteEdit';
 import { Timeline } from './components/Timeline';
+import { Header } from './components/Header';
 
 export default function EditorApp() {
-  const spriteData = useEditorStore((state) => state.spriteData ?? undefined);
-  const setSpriteData = useEditorStore((state) => state.setSpriteData);
-  const updatePalette = useEditorStore((state) => state.updatePalette);
-
   const [opened, { toggle }] = useDisclosure();
   return (
     <AppShell
@@ -26,6 +21,7 @@ export default function EditorApp() {
       <AppShell.Header>
         <Group h='100%' px='xs'>
           <Burger opened={opened} onClick={toggle} hiddenFrom='sm' size='sm' />
+          <Header />
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p={0}>
@@ -33,7 +29,7 @@ export default function EditorApp() {
           <Stack bg='var(--mantine-color-body)' align='stretch' justify='flex-start' gap='md'>
             <SpriteEdit />
             <Divider my='md' />
-            {spriteData && <PaletteEditor palette={spriteData.palette} onChange={updatePalette} />}
+            <PaletteEditor />
           </Stack>
         </ScrollArea>
       </AppShell.Navbar>
@@ -53,9 +49,12 @@ export default function EditorApp() {
             <Timeline />
           </Split.Pane>
         </Split>
-        <Box>
+        <Box data-mantine-color-scheme='dark'>
           [Sprite Editor with palette color selector, vertical slider to select layers and
           dynamically sized button grid to set materials]
+          <Box bg='var(--mantine-primary-color-filled)' p='md'>
+            Test abc
+          </Box>
         </Box>
       </AppShell.Main>
       <AppShell.Footer p='md'>Footer</AppShell.Footer>

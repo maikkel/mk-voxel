@@ -1,6 +1,6 @@
 import { Box, Group, Input, Select } from '@mantine/core';
 import { APP_BORDER_STYLE } from '../utils/styles';
-import TimelineBrowser from './timeline/TimelineBrowser';
+import FrameBrowser from './timeline/FrameBrowser';
 import { IconCheck, IconTrash } from '@tabler/icons-react';
 import CompactButton from './input/CompactButton';
 import { ComboboxItem, ComboboxLikeRenderOptionInput } from '@mantine/core/lib/components/Combobox';
@@ -29,6 +29,8 @@ export function Timeline() {
             data={['default', 'animation_1', 'animation_2']}
             defaultValue='default'
             renderOption={animatioonOption}
+            comboboxProps={{ width: 250, position: 'bottom-start', size: 'sm' }}
+            maw={120}
           />
         </Group>
         <Box>
@@ -36,7 +38,7 @@ export function Timeline() {
             <Input.Label htmlFor='frame-control' size={'xs'}>
               Frames
             </Input.Label>
-            <TimelineBrowser />
+            <FrameBrowser />
           </Group>
         </Box>
       </Group>

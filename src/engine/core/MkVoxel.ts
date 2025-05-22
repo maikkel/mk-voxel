@@ -1,7 +1,6 @@
 import { AnimationKey, Dimensions, MaterialKey, SpriteData, SpriteId } from '../types/SpriteData';
 import { createEmptySprite, resizeFrameVoxels } from './utils/sprite';
-import { mapObjectValues } from './utils/common';
-import { editorSetVoxel, gameSetVoxel } from './utils/voxel';
+import { setVoxel } from './utils/voxel';
 
 export enum EngineMode {
   EDITOR = 'editor',
@@ -11,27 +10,9 @@ export enum EngineMode {
 export class MkVoxel {
   private sprites: Map<SpriteId, SpriteData> = new Map();
   private nextSpriteId = 1;
-  private mode: EngineMode = EngineMode.EDITOR;
 
-  constructor(mode: EngineMode = EngineMode.EDITOR) {
-    this.setMode(mode);
-    console.info(`MkVoxel initialized in ${mode} mode.`);
-  }
-
-  setMode(mode: EngineMode) {
-    this.mode = mode;
-  }
-
-  getMode(): EngineMode {
-    return this.mode;
-  }
-
-  isEditorMode() {
-    return this.mode === EngineMode.EDITOR;
-  }
-
-  isGameMode() {
-    return this.mode === EngineMode.GAME;
+  constructor() {
+    console.info(`MkVoxel initialized.`);
   }
 
   createSprite(
@@ -51,18 +32,14 @@ export class MkVoxel {
     return this.sprites.get(id);
   }
 
-  resizeSprite(sprite: SpriteData, newDims: Dimensions): SpriteData {
-    return {
-      ...sprite,
-      dimensions: newDims,
-      animations: mapObjectValues(sprite.animations, (animation) => ({
-        ...animation,
-        frames: animation.frames.map((frame) => ({
-          ...frame,
-          voxels: resizeFrameVoxels(frame.voxels, newDims.x, newDims.y, newDims.z),
-        })),
-      })),
-    };
+  resizeSprite(sprite: SpriteData, newDims: Dimensions): void {
+    sprite.dimensions = newDims;
+
+    for (const animation of Object.values(sprite.animations)) {
+      for (const frame of animation.frames) {
+        frame.voxels = resizeFrameVoxels(frame.voxels, newDims.x, newDims.y, newDims.z);
+      }
+    }
   }
 
   setVoxel(
@@ -74,10 +51,6 @@ export class MkVoxel {
     z: number,
     materialKey: MaterialKey | null
   ) {
-    if (this.isEditorMode()) {
-      return editorSetVoxel(sprite, animationKey, frameIndex, x, y, z, materialKey);
-    } else {
-      return gameSetVoxel(sprite, animationKey, frameIndex, x, y, z, materialKey);
-    }
+    setVoxel(sprite, animationKey, frameIndex, x, y, z, materialKey);
   }
 }

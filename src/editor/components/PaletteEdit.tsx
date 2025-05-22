@@ -10,25 +10,24 @@ import {
   rem,
 } from '@mantine/core';
 import { IconPlus, IconTrash, IconSunLowFilled } from '@tabler/icons-react';
-import type { MaterialKey, Palette } from '../../engine/types/SpriteData';
+import type { MaterialKey } from '../../engine/types/SpriteData';
+import { useEditorStore } from '../store/useEditorStore';
 
-type PaletteEditorProps = {
-  palette: Palette;
-  onChange: (newPalette: Palette) => void;
-};
+export const PaletteEditor = () => {
+  const { palette } = useEditorStore((state) => state.spriteData);
+  const updatePalette = useEditorStore((state) => state.updatePalette);
 
-export const PaletteEditor = ({ palette, onChange }: PaletteEditorProps) => {
   const keys = Object.keys(palette) as MaterialKey[];
 
   const updateColor = (key: MaterialKey, color: string) => {
-    onChange({
+    updatePalette({
       ...palette,
       [key]: { ...palette[key], color },
     });
   };
 
   const toggleGlow = (key: MaterialKey) => {
-    onChange({
+    updatePalette({
       ...palette,
       [key]: { ...palette[key], glow: !palette[key].glow },
     });
@@ -39,7 +38,7 @@ export const PaletteEditor = ({ palette, onChange }: PaletteEditorProps) => {
     while (palette[newKey]) {
       newKey = `color${Math.floor(Math.random() * 10000)}` as MaterialKey;
     }
-    onChange({
+    updatePalette({
       ...palette,
       [newKey]: { color: '#ffffff', glow: false },
     });
@@ -48,7 +47,7 @@ export const PaletteEditor = ({ palette, onChange }: PaletteEditorProps) => {
   const removeColor = (key: MaterialKey) => {
     const updated = { ...palette };
     delete updated[key];
-    onChange(updated);
+    updatePalette(updated);
   };
 
   return (
@@ -99,7 +98,6 @@ export const PaletteEditor = ({ palette, onChange }: PaletteEditorProps) => {
               <Tooltip label='Glow' withArrow>
                 <ActionIcon
                   variant={palette[key].glow ? 'filled' : 'outline'}
-                  color='blue'
                   size='sm'
                   onClick={() => toggleGlow(key)}
                 >

@@ -21,7 +21,7 @@
       height: 0;
       border-left: 12px solid transparent;
       border-right: 12px solid transparent;
-      border-top: 10px solid #1971c2;
+      border-top: 10px solid var(--mantine-primary-color-filled);
       position: absolute;
       bottom: -10px;
     }

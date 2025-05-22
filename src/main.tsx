@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import { MantineProvider } from '@mantine/core';
-import '@mantine/core/styles.css'; // ✅ Correct place
+import '@mantine/core/styles.css';
 import './styles.scss';
+import EditorApp from './editor/EditorApp';
+// Supports weights 100-900
+import '@fontsource-variable/roboto';
+import { ThemeWrapper } from './editor/themes/ThemeWrapper';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MantineProvider defaultColorScheme='dark'>
-      <App />
-    </MantineProvider>
+    <ThemeWrapper>
+      <EditorApp />
+    </ThemeWrapper>
   </React.StrictMode>
 );

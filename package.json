@@ -12,11 +12,13 @@
   "dependencies": {
     "@babylonjs/core": "^8.8.5",
     "@babylonjs/gui": "^8.8.5",
+    "@fontsource-variable/roboto": "^5.2.5",
     "@gfazioli/mantine-split-pane": "^2.1.1",
     "@mantine/core": "^8.0.1",
     "@mantine/hooks": "^8.0.1",
     "@tabler/icons-react": "^3.33.0",
     "clsx": "^2.1.1",
+    "immer": "^10.1.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "zustand": "^5.0.4"

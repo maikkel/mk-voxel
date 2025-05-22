@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import { initEditorScene } from "../initEditorScene";
-import { AbstractEngine } from "@babylonjs/core";
+import { useEffect, useRef } from 'react';
+import { initViewScene } from '../utils/initViewScene';
+import { AbstractEngine } from '@babylonjs/core';
 
 export default function View() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -8,7 +8,7 @@ export default function View() {
 
   useEffect(() => {
     if (canvasRef.current) {
-      const scene = initEditorScene(canvasRef.current);
+      const scene = initViewScene(canvasRef.current);
       engineRef.current = scene.getEngine();
 
       const observer = new ResizeObserver(() => {
@@ -23,10 +23,5 @@ export default function View() {
     }
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{ width: "100%", height: "100%", display: "block" }}
-    />
-  );
+  return <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />;
 }
