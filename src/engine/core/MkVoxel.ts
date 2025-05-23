@@ -1,29 +1,25 @@
-import { AnimationKey, Dimensions, MaterialKey, SpriteData, SpriteId } from '../types/SpriteData';
-import { createEmptySprite, resizeFrameVoxels } from './utils/sprite';
+import {
+  AnimationKey,
+  Dimensions,
+  type MaterialIndex,
+  SpriteData,
+  SpriteId,
+} from '../types/SpriteData';
+import { createSprite, resizeFrameVoxels } from './utils/sprite';
 import { setVoxel } from './utils/voxel';
-
-export enum EngineMode {
-  EDITOR = 'editor',
-  GAME = 'game',
-}
+import { log } from './utils/log';
 
 export class MkVoxel {
   private sprites: Map<SpriteId, SpriteData> = new Map();
   private nextSpriteId = 1;
 
   constructor() {
-    console.info(`MkVoxel initialized.`);
+    log(`MkVoxel initialized.`);
   }
 
-  createSprite(
-    x: number,
-    y: number,
-    z: number,
-    name: string,
-    defaultAnimationName = 'default'
-  ): SpriteData {
+  createSprite(dims: Dimensions, name: string, defaultAnimationName = 'default'): SpriteData {
     const id = this.nextSpriteId++ as SpriteId;
-    const sprite = createEmptySprite(id, name, x, y, z, defaultAnimationName);
+    const sprite = createSprite(id, name, dims, defaultAnimationName);
     this.sprites.set(id, sprite);
     return sprite;
   }
@@ -33,13 +29,13 @@ export class MkVoxel {
   }
 
   resizeSprite(sprite: SpriteData, newDims: Dimensions): void {
-    sprite.dimensions = newDims;
-
     for (const animation of Object.values(sprite.animations)) {
       for (const frame of animation.frames) {
-        frame.voxels = resizeFrameVoxels(frame.voxels, newDims.x, newDims.y, newDims.z);
+        frame.voxels = resizeFrameVoxels(frame.voxels, sprite.dimensions, newDims);
       }
     }
+
+    sprite.dimensions = newDims;
   }
 
   setVoxel(
@@ -49,8 +45,8 @@ export class MkVoxel {
     x: number,
     y: number,
     z: number,
-    materialKey: MaterialKey | null
+    materialIndex: MaterialIndex
   ) {
-    setVoxel(sprite, animationKey, frameIndex, x, y, z, materialKey);
+    setVoxel(sprite, animationKey, frameIndex, x, y, z, materialIndex);
   }
 }

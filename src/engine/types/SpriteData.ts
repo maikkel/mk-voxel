@@ -1,5 +1,5 @@
-export type MaterialKey = string; // e.g. "r", "g", "b"
-export type AnimationKey = string; // e.g. "walk", "idle"
+export type MaterialIndex = number; // 0–255
+export type AnimationKey = string;
 export type SpriteId = number;
 
 export interface Material {
@@ -7,9 +7,7 @@ export interface Material {
   glow?: boolean;
 }
 
-export interface Palette {
-  [key: MaterialKey]: Material;
-}
+export type Palette = Record<MaterialIndex, Material>; // index = MaterialIndex
 
 export interface AnimationList {
   [key: AnimationKey]: Animation;
@@ -23,7 +21,7 @@ export interface Animation {
 
 export interface Frame {
   time?: number;
-  voxels: (MaterialKey | null)[][][];
+  voxels: Uint8Array; // length = x * y * z
 }
 
 export interface Dimensions {

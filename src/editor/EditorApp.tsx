@@ -10,13 +10,17 @@ import View from './components/View';
 import { APP_BORDER_STYLE } from './utils/styles';
 import FrameEdit from './components/FrameEdit';
 import { Timeline } from './components/Timeline';
+import { useEditorStore } from './store/useEditorStore';
 
 export default function EditorApp() {
   const [opened, { toggle }] = useDisclosure();
 
+  const layout = useEditorStore((s) => s.layout);
+
   const { width, height } = useViewportSize();
   const [debouncedAspect] = useDebouncedValue(width / height, 100);
   const isWide = debouncedAspect > 1.7;
+  const splitOrientation = layout === 'auto' ? (isWide ? 'vertical' : 'horizontal') : layout;
 
   return (
     <Box style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -43,7 +47,7 @@ export default function EditorApp() {
         </AppShell.Navbar>
         <AppShell.Main style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
           <Split
-            orientation={isWide ? 'vertical' : 'horizontal'}
+            orientation={splitOrientation}
             variant='dotted'
             knobSize='xs'
             size='lg'

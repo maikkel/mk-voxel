@@ -1,10 +1,10 @@
-import { Animation } from '../../types/SpriteData';
-import { createEmptyFrame } from './frame';
+import { Animation, type Dimensions } from '../../types/SpriteData';
+import { createFrame } from './frame';
 
-export function createEmptyAnimation(x: number, y: number, z: number, name: string): Animation {
+export function createAnimation(dims: Dimensions, name: string): Animation {
   return {
     name: name,
     frameTime: 100,
-    frames: [{ voxels: createEmptyFrame(x, y, z) }],
+    frames: [{ voxels: createFrame(dims) }],
   };
 }

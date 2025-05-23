@@ -1,44 +1,46 @@
 import { createBasePalette } from './palette';
-import { createEmptyAnimation } from './animation';
-import type { SpriteData } from '../../types/SpriteData';
+import { createAnimation } from './animation';
+import type { Dimensions, MaterialIndex, SpriteData } from '../../types/SpriteData';
 
-export function createEmptySprite(
+export function createSprite(
   id: number,
   name: string,
-  x: number,
-  y: number,
-  z: number,
+  dims: Dimensions,
   defaultAnimationName = 'default'
 ): SpriteData {
   return {
     id,
     name,
     palette: createBasePalette(),
-    dimensions: { x, y, z },
+    dimensions: dims,
     frameTime: 100,
     animations: {
-      [defaultAnimationName]: createEmptyAnimation(x, y, z, defaultAnimationName),
+      [defaultAnimationName]: createAnimation(dims, defaultAnimationName),
     },
   };
 }
 
 export function resizeFrameVoxels(
-  oldColors: (string | null)[][][],
-  newX: number,
-  newY: number,
-  newZ: number
-): (string | null)[][][] {
-  const resized: (string | null)[][][] = [];
-  for (let z = 0; z < newZ; z++) {
-    const layer: (string | null)[][] = [];
-    for (let y = 0; y < newY; y++) {
-      const row: (string | null)[] = [];
-      for (let x = 0; x < newX; x++) {
-        row.push(oldColors[z]?.[y]?.[x] ?? 'r');
+  oldVoxels: Uint8Array,
+  oldDims: Dimensions,
+  newDims: Dimensions,
+  fill: MaterialIndex = 0
+): Uint8Array {
+  const newVoxels = new Uint8Array(newDims.x * newDims.y * newDims.z).fill(fill);
+
+  const minX = Math.min(oldDims.x, newDims.x);
+  const minY = Math.min(oldDims.y, newDims.y);
+  const minZ = Math.min(oldDims.z, newDims.z);
+
+  for (let z = 0; z < minZ; z++) {
+    for (let y = 0; y < minY; y++) {
+      for (let x = 0; x < minX; x++) {
+        const oldIndex = x + y * oldDims.x + z * oldDims.x * oldDims.y;
+        const newIndex = x + y * newDims.x + z * newDims.x * newDims.y;
+        newVoxels[newIndex] = oldVoxels[oldIndex];
       }
-      layer.push(row);
     }
-    resized.push(layer);
   }
-  return resized;
+
+  return newVoxels;
 }

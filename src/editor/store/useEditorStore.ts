@@ -1,12 +1,19 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import type { Dimensions, Palette, SpriteData } from '../../engine/types/SpriteData';
+import {
+  AnimationKey,
+  type Dimensions,
+  type MaterialIndex,
+  type Palette,
+  type SpriteData,
+} from '../../engine/types/SpriteData';
 import { MkVoxel } from '../../engine/core/MkVoxel';
 import type { MantineThemeOverride } from '@mantine/core';
 import { themeBlack, themeBlue } from '../themes/themes';
 
 type ThemeName = 'blue' | 'black';
+export type LayoutType = 'vertical' | 'horizontal' | 'auto';
 
 const themeMap: Record<ThemeName, MantineThemeOverride> = {
   blue: themeBlue,
@@ -14,19 +21,28 @@ const themeMap: Record<ThemeName, MantineThemeOverride> = {
 };
 
 const engine = new MkVoxel();
-const initialSpriteData = engine.createSprite(3, 3, 3, 'new_sprite');
+const initialSpriteData = engine.createSprite({ x: 3, y: 3, z: 3 }, 'new_sprite');
 
 interface EditorStore {
   themeName: ThemeName;
   setThemeName: (name: ThemeName) => void;
   currentTheme: MantineThemeOverride;
+  layout: LayoutType;
+  setLayout: (layout: LayoutType) => void;
 
   spriteData: SpriteData;
 
   setSpriteData: (data: SpriteData) => void;
 
   resizeSprite: (newDimensions: Dimensions) => void;
-  setVoxel: (anim: string, frame: number, x: number, y: number, z: number, mat: string) => void;
+  setVoxel: (
+    anim: AnimationKey,
+    frame: number,
+    x: number,
+    y: number,
+    z: number,
+    mat: MaterialIndex
+  ) => void;
 
   updatePalette: (newPalette: Palette) => void;
 
@@ -47,6 +63,8 @@ export const useEditorStore = create<EditorStore>()(
         themeName: 'blue',
         setThemeName: (name) => set({ themeName: name, currentTheme: themeMap[name] }),
         currentTheme: themeMap['blue'],
+        layout: 'auto',
+        setLayout: (layout) => set({ layout: layout }),
 
         spriteData: initialSpriteData,
         setSpriteData: (data: SpriteData) => set({ spriteData: data }),
