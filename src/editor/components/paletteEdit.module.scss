@@ -1,0 +1,18 @@
+@keyframes fadeBorder {
+  0% {
+    outline-color: green;
+    background: green;
+    opacity: 1;
+  }
+  100% {
+    outline-color: transparent;
+    background: transparent;
+    opacity: 1; /* border fades but content stays visible */
+  }
+}
+
+.newItem {
+  outline: 4px solid green;
+  background: green;
+  animation: fadeBorder 5s ease-out forwards;
+}

@@ -4,6 +4,13 @@ export function initViewScene(canvas: HTMLCanvasElement): BABYLON.Scene {
   const engine = new BABYLON.Engine(canvas, true);
   const scene = new BABYLON.Scene(engine);
 
+  const observer = new ResizeObserver(() => {
+    engine.resize();
+    scene.render(); // optional: force render after resize to avoid flicker
+  });
+
+  if (canvas.parentElement) observer.observe(canvas.parentElement);
+
   // Camera
   const camera = new BABYLON.ArcRotateCamera(
     'camera',

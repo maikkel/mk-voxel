@@ -3,7 +3,8 @@ export type AnimationKey = string;
 export type SpriteId = number;
 
 export interface Material {
-  color: string; // "#ff00cc"
+  color: string | null; // "#ff00cc"
+  name?: string;
   glow?: boolean;
 }
 

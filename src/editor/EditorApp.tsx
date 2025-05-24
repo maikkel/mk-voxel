@@ -7,7 +7,7 @@ import SpriteEdit from './components/SpriteEdit';
 import PaletteEdit from './components/PaletteEdit';
 import { Split } from '@gfazioli/mantine-split-pane';
 import View from './components/View';
-import { APP_BORDER_STYLE } from './utils/styles';
+import { APP_BORDER_STYLE, APP_BORDER_STYLE_WIDE } from './utils/styles';
 import FrameEdit from './components/FrameEdit';
 import { Timeline } from './components/Timeline';
 import { useEditorStore } from './store/useEditorStore';
@@ -27,17 +27,17 @@ export default function EditorApp() {
       <AppShell
         header={{ height: 60 }}
         footer={{ height: 60 }}
-        navbar={{ width: 350, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+        navbar={{ width: 400, breakpoint: 'sm', collapsed: { mobile: !opened } }}
         style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}
         padding={0}
       >
-        <AppShell.Header>
+        <AppShell.Header style={{ borderBottom: APP_BORDER_STYLE_WIDE }}>
           <Group h='100%' px='xs'>
             <Burger opened={opened} onClick={toggle} hiddenFrom='sm' size='sm' />
             <Header />
           </Group>
         </AppShell.Header>
-        <AppShell.Navbar p={0}>
+        <AppShell.Navbar p={0} style={{ borderRight: APP_BORDER_STYLE_WIDE }}>
           <ScrollArea p='xs' scrollbars='y'>
             <Stack bg='var(--mantine-color-body)' align='stretch' justify='flex-start' gap='md'>
               <SpriteEdit />
@@ -77,11 +77,13 @@ export default function EditorApp() {
             </Split.Pane>
           </Split>
 
-          <Box p={0} style={{ borderTop: APP_BORDER_STYLE }}>
+          <Box p={0} style={{ borderTop: APP_BORDER_STYLE_WIDE }}>
             <Timeline />
           </Box>
         </AppShell.Main>
-        <AppShell.Footer p='md'>Footer</AppShell.Footer>
+        <AppShell.Footer p='md' style={{ borderTop: APP_BORDER_STYLE_WIDE }}>
+          Footer
+        </AppShell.Footer>
       </AppShell>
     </Box>
   );

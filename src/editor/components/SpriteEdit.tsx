@@ -6,7 +6,7 @@ import DimsEdit from './spriteEdit/DimsEdit';
 
 export default function SpriteEdit() {
   const spriteData = useEditorStore((state) => state.spriteData);
-  const setSpriteData = useEditorStore((state) => state.setSpriteData); // still used for frameTime
+  const setSpriteData = useEditorStore((state) => state.setSpriteData);
 
   if (!spriteData) return <div>No sprite loaded</div>;
 
@@ -24,7 +24,7 @@ export default function SpriteEdit() {
       frameTime: value,
     });
   };
-
+  console.log('update');
   return (
     <Stack>
       <Group grow gap='sm'>
