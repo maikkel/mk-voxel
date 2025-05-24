@@ -22,6 +22,7 @@ export default function Settings() {
           onChange={(val) => val && setThemeName(val as 'blue' | 'black')}
           data={[
             { value: 'blue', label: 'Blue' },
+            { value: 'grey', label: 'Grey' },
             { value: 'black', label: 'Black' },
           ]}
           comboboxProps={{ withinPortal: false }}

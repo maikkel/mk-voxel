@@ -10,13 +10,14 @@ import {
 } from '../../engine/types/SpriteData';
 import { MkVoxel } from '../../engine/core/MkVoxel';
 import type { MantineThemeOverride } from '@mantine/core';
-import { themeBlack, themeBlue } from '../themes/themes';
+import { themeBlack, themeBlue, themeGrey } from '../themes/themes';
 
-type ThemeName = 'blue' | 'black';
+type ThemeName = 'blue' | 'grey' | 'black';
 export type LayoutType = 'vertical' | 'horizontal' | 'auto';
 
 const themeMap: Record<ThemeName, MantineThemeOverride> = {
   blue: themeBlue,
+  grey: themeGrey,
   black: themeBlack,
 };
 
@@ -60,9 +61,9 @@ export const useEditorStore = create<EditorStore>()(
   immer(
     persist(
       (set) => ({
-        themeName: 'blue',
+        themeName: 'grey',
         setThemeName: (name) => set({ themeName: name, currentTheme: themeMap[name] }),
-        currentTheme: themeMap['blue'],
+        currentTheme: themeMap['grey'],
         layout: 'auto',
         setLayout: (layout) => set({ layout: layout }),
 
@@ -102,6 +103,8 @@ export const useEditorStore = create<EditorStore>()(
       {
         name: 'editor-store', // 🔑 localStorage key
         partialize: (state) => ({
+          themeName: state.themeName,
+          layout: state.layout,
           spriteData: state.spriteData,
           currentAnimationName: state.currentAnimationName,
           currentFrameIndex: state.currentFrameIndex,
