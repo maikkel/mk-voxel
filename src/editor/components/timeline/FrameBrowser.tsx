@@ -103,8 +103,6 @@ export default function FrameBrowser() {
 
             <CompactButton
               icon={<IconTrash size={16} />}
-              tooltip='Delete Frame'
-              tooltipPosition='bottom'
               color='red'
               className={'delete'}
               onClick={handleDelete}

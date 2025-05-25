@@ -34,6 +34,8 @@ interface EditorStore {
   spriteData: SpriteData;
 
   setSpriteData: (data: SpriteData) => void;
+  setSpriteName: (name: string) => void;
+  setSpriteFrameTime: (frameTime: number) => void;
 
   resizeSprite: (newDimensions: Dimensions) => void;
   setVoxel: (
@@ -53,8 +55,8 @@ interface EditorStore {
   currentFrameIndex: number;
   setCurrentFrameIndex: (index: number) => void;
 
-  currentYIndex: number;
-  setCurrentYIndex: (index: number) => void;
+  currentSlice: number;
+  setCurrentSlice: (index: number) => void;
 }
 
 export const useEditorStore = create<EditorStore>()(
@@ -69,6 +71,18 @@ export const useEditorStore = create<EditorStore>()(
 
         spriteData: initialSpriteData,
         setSpriteData: (data: SpriteData) => set({ spriteData: data }),
+
+        setSpriteName: (name: string) => {
+          set((state) => {
+            state.spriteData.name = name;
+          });
+        },
+
+        setSpriteFrameTime: (frameTime: number) => {
+          set((state) => {
+            state.spriteData.frameTime = frameTime;
+          });
+        },
 
         resizeSprite: (newDimensions: Dimensions) => {
           set((state) => {
@@ -97,18 +111,18 @@ export const useEditorStore = create<EditorStore>()(
         currentFrameIndex: 0,
         setCurrentFrameIndex: (index) => set({ currentFrameIndex: index }),
 
-        currentYIndex: 0,
-        setCurrentYIndex: (index) => set({ currentYIndex: index }),
+        currentSlice: 0,
+        setCurrentSlice: (index) => set({ currentSlice: index }),
       }),
       {
-        name: 'editor-store', // 🔑 localStorage key
+        name: 'editor-store',
         partialize: (state) => ({
           themeName: state.themeName,
           layout: state.layout,
           spriteData: state.spriteData,
           currentAnimationName: state.currentAnimationName,
           currentFrameIndex: state.currentFrameIndex,
-          currentYIndex: state.currentYIndex,
+          currentYIndex: state.currentSlice,
         }),
       }
     )

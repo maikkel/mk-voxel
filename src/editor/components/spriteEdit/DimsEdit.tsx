@@ -6,8 +6,8 @@ import SafeNumberInput from '../input/SafeNumberInput';
 import CompactButton from '../input/CompactButton';
 
 export default function DimsEdit() {
-  const spriteData = useEditorStore((state) => state.spriteData);
-  const resizeSprite = useEditorStore((state) => state.resizeSprite);
+  const spriteData = useEditorStore((s) => s.spriteData);
+  const resizeSprite = useEditorStore((s) => s.resizeSprite);
 
   const [localDims, setLocalDims] = useState(spriteData.dimensions);
 

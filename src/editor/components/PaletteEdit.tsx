@@ -19,8 +19,8 @@ import { useState } from 'react';
 import styles from './paletteEdit.module.scss';
 
 export default function PaletteEdit() {
-  const { palette } = useEditorStore((state) => state.spriteData);
-  const updatePalette = useEditorStore((state) => state.updatePalette);
+  const palette = useEditorStore((s) => s.spriteData.palette);
+  const updatePalette = useEditorStore((s) => s.updatePalette);
 
   const keys = Object.keys(palette).map(Number) as MaterialIndex[];
 
