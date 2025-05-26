@@ -121,6 +121,7 @@ export function Timeline() {
               icon={<IconCheck size={14} />}
               onClick={apply}
               size='sm'
+              color='green'
             />
             <CompactButton
               tooltip='Cancel'
@@ -130,6 +131,7 @@ export function Timeline() {
                 setInputValue('');
               }}
               size='sm'
+              color='red'
             />
           </>
         )}

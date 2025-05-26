@@ -8,7 +8,7 @@ import {
 import React from 'react';
 
 type CompactButtonProps = {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   color?: string;
   tooltip?: string;

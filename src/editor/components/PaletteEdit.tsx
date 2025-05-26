@@ -1,22 +1,21 @@
 import {
   ActionIcon,
-  Button,
+  Box,
   ColorInput,
   Divider,
   Group,
   Stack,
   Text,
-  Tooltip,
-  rem,
   TextInput,
-  Box,
+  Tooltip,
 } from '@mantine/core';
-import { IconPlus, IconTrash, IconSunLowFilled, IconEdit } from '@tabler/icons-react';
+import { IconEdit, IconPlus, IconSunLowFilled, IconTrash } from '@tabler/icons-react';
 import { useEditorStore } from '../store/useEditorStore';
 import type { MaterialIndex } from '../../engine/types/SpriteData';
 import { logError } from '../../engine/core/utils/log';
 import { useState } from 'react';
 import styles from './paletteEdit.module.scss';
+import CompactButton from './input/CompactButton';
 
 export default function PaletteEdit() {
   const palette = useEditorStore((s) => s.spriteData.palette);
@@ -94,16 +93,20 @@ export default function PaletteEdit() {
     <Stack gap='xs' w='100%'>
       <Group justify='space-between'>
         <Text fw={600} size='sm'>
-          Palette Editor
+          Material Palette
         </Text>
-        <Button size='xs' leftSection={<IconPlus size={14} />} onClick={addColor}>
-          Add Color
-        </Button>
+
+        <CompactButton
+          icon={<IconPlus size={14} />}
+          tooltip={'Add Material'}
+          size='md'
+          onClick={addColor}
+        />
       </Group>
 
       <Divider my={2} />
 
-      <Stack gap='sm' w='100%'>
+      <Stack gap='xs' w='100%'>
         {keys
           .filter((key) => key != 0)
           .map((key) => (
@@ -113,10 +116,9 @@ export default function PaletteEdit() {
               wrap='nowrap'
               gap='xs'
               w='100%'
-              style={{ flexWrap: 'nowrap' }}
               className={latestAddedKey === key ? styles.newItem : ''}
             >
-              <Text size='xs' fw={500} style={{ width: rem(12), flexShrink: 0 }}>
+              <Text size='xs' fw={500}>
                 {key}:
               </Text>
 
@@ -156,43 +158,31 @@ export default function PaletteEdit() {
               {palette[key].color != null && (
                 <ColorInput
                   value={palette[key].color}
-                  onChangeEnd={(value) => updateColor(key, value)} // ← only fires when selection ends
+                  onChangeEnd={(value) => updateColor(key, value)}
                   format='hex'
                   size='xs'
                   withEyeDropper={false}
                   w='100%'
-                  styles={{
-                    input: {
-                      width: '100%',
-                      minWidth: rem(100),
-                      fontSize: rem(12),
-                      flexGrow: 1,
-                    },
-                  }}
                 />
               )}
 
               <Group gap='xs' wrap='nowrap'>
-                <Tooltip label='Glow' withArrow>
-                  <ActionIcon
-                    variant={palette[key].glow ? 'filled' : 'outline'}
-                    size='sm'
-                    onClick={() => toggleGlow(key)}
-                  >
-                    <IconSunLowFilled size={14} />
-                  </ActionIcon>
-                </Tooltip>
+                <CompactButton
+                  icon={<IconSunLowFilled size={14} />}
+                  tooltip={'Glow'}
+                  variant={palette[key].glow ? 'filled' : 'outline'}
+                  size='sm'
+                  onClick={() => toggleGlow(key)}
+                />
 
-                <Tooltip label='Remove color' withArrow>
-                  <ActionIcon
-                    variant='light'
-                    color='red'
-                    size='sm'
-                    onClick={() => removeColor(key)}
-                  >
-                    <IconTrash size={14} />
-                  </ActionIcon>
-                </Tooltip>
+                <CompactButton
+                  icon={<IconTrash size={14} />}
+                  tooltip={'Remove color'}
+                  variant='light'
+                  color='red'
+                  size='sm'
+                  onClick={() => removeColor(key)}
+                />
               </Group>
             </Group>
           ))}

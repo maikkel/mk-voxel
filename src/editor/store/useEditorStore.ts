@@ -61,6 +61,9 @@ interface EditorStore {
 
   currentSlice: number;
   setCurrentSlice: (index: number) => void;
+
+  currentMaterialIndex: MaterialIndex;
+  setCurrentMaterialIndex: (index: MaterialIndex) => void;
 }
 
 export const useEditorStore = create<EditorStore>()(
@@ -132,6 +135,9 @@ export const useEditorStore = create<EditorStore>()(
 
         currentSlice: 0,
         setCurrentSlice: (index) => set({ currentSlice: index }),
+
+        currentMaterialIndex: 0,
+        setCurrentMaterialIndex: (index) => set({ currentMaterialIndex: index }),
       }),
       {
         name: 'editor-store',

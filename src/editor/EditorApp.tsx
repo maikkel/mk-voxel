@@ -7,7 +7,7 @@ import SpriteEdit from './components/SpriteEdit';
 import PaletteEdit from './components/PaletteEdit';
 import { Split } from '@gfazioli/mantine-split-pane';
 import View from './components/View';
-import { APP_BORDER_STYLE, APP_BORDER_STYLE_WIDE } from './utils/styles';
+import { APP_BORDER_STYLE_WIDE } from './utils/styles';
 import FrameEdit from './components/FrameEdit';
 import { Timeline } from './components/Timeline';
 import { useEditorStore } from './store/useEditorStore';
@@ -63,17 +63,8 @@ export default function EditorApp() {
               <View />
             </Split.Pane>
             <Split.Resizer m={0} size='md' bg='var(--app-shell-border-color)' />
-            <Split.Pane grow minHeight='10%'>
-              <Stack gap={0} h='100%'>
-                <Box style={{ flexGrow: 1, minHeight: 0 }}>
-                  <Group h='100%'>
-                    <Box h='100%' w={250} style={{ borderRight: APP_BORDER_STYLE }}>
-                      <FrameEdit />
-                    </Box>
-                    <Box h='100%'>b</Box>
-                  </Group>
-                </Box>
-              </Stack>
+            <Split.Pane grow minHeight='30%'>
+              <FrameEdit />
             </Split.Pane>
           </Split>
 
