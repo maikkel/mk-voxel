@@ -7,7 +7,8 @@ import {
 } from '../types/SpriteData';
 import { createSprite, resizeFrameVoxels } from './utils/sprite';
 import { setVoxel } from './utils/voxel';
-import { log } from './utils/log';
+import { error, log } from './utils/log';
+import { createAnimation, renameAnimation } from './utils/animation';
 
 export class MkVoxel {
   private sprites: Map<SpriteId, SpriteData> = new Map();
@@ -36,6 +37,24 @@ export class MkVoxel {
     }
 
     sprite.dimensions = newDims;
+  }
+
+  addAnimation(sprite: SpriteData, name: AnimationKey): void {
+    if (sprite.animations[name]) {
+      error(`Animation key "${name}" already exists in sprite ${sprite.id}.`);
+    }
+    sprite.animations[name] = createAnimation(sprite.dimensions, name);
+  }
+
+  removeAnimation(sprite: SpriteData, name: AnimationKey): void {
+    if (!sprite.animations[name]) {
+      error(`Animation key "${name}" does not exist in sprite ${sprite.id}.`);
+    }
+    delete sprite.animations[name];
+  }
+
+  renameAnimation(sprite: SpriteData, oldKey: AnimationKey, newKey: AnimationKey): void {
+    renameAnimation(sprite, oldKey, newKey);
   }
 
   setVoxel(

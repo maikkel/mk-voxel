@@ -2,13 +2,13 @@ import { TextInput, TextInputProps } from '@mantine/core';
 
 type SafeTextInputProps = Omit<TextInputProps, 'onChange'> & {
   value: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   allowSpace?: boolean;
 };
 
 export default function SafeTextInput({
   value,
-  onChange,
+  onChange = () => {},
   allowSpace = true,
   ...props
 }: SafeTextInputProps) {

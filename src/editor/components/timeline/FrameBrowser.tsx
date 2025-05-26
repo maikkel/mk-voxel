@@ -14,8 +14,13 @@ import { useTimeout } from '@mantine/hooks';
 
 import './frameBrowser.scss';
 import CompactButton from '../input/CompactButton';
+import type { Animation } from '../../../engine/types/SpriteData';
 
-export default function FrameBrowser() {
+interface FrameBrowserProps {
+  animation: Animation;
+}
+
+export default function FrameBrowser({ animation }: FrameBrowserProps) {
   const [opened, setOpened] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const isOverTrigger = useRef<boolean>(false);
@@ -118,7 +123,7 @@ export default function FrameBrowser() {
         firstIcon={IconArrowBarToLeft}
         lastIcon={IconArrowBarToRight}
         dotsIcon={IconGripHorizontal}
-        total={6}
+        total={animation.frames.length}
         defaultValue={1}
         size='md'
         gap={2}

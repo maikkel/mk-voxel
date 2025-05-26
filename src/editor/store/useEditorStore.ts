@@ -49,8 +49,12 @@ interface EditorStore {
 
   updatePalette: (newPalette: Palette) => void;
 
-  currentAnimationName: string;
-  setCurrentAnimationName: (name: string) => void;
+  addAnimation: (name: AnimationKey) => void;
+  removeAnimation: (name: AnimationKey) => void;
+  renameAnimation: (oldKey: AnimationKey, newKey: AnimationKey) => void;
+
+  currentAnimationKey: string;
+  setCurrentAnimationKey: (name: string) => void;
 
   currentFrameIndex: number;
   setCurrentFrameIndex: (index: number) => void;
@@ -86,27 +90,42 @@ export const useEditorStore = create<EditorStore>()(
 
         resizeSprite: (newDimensions: Dimensions) => {
           set((state) => {
-            if (!state.spriteData) return;
             engine.resizeSprite(state.spriteData, newDimensions);
           });
         },
 
         setVoxel: (anim, frame, x, y, z, mat) => {
           set((state) => {
-            if (!state.spriteData) return;
             engine.setVoxel(state.spriteData, anim, frame, x, y, z, mat);
           });
         },
 
         updatePalette: (newPalette: Palette) => {
           set((state) => {
-            if (!state.spriteData) return;
             state.spriteData.palette = newPalette;
           });
         },
 
-        currentAnimationName: Object.keys(initialSpriteData.animations)[0],
-        setCurrentAnimationName: (name) => set({ currentAnimationName: name }),
+        addAnimation: (name: AnimationKey) => {
+          set((state) => {
+            engine.addAnimation(state.spriteData, name);
+          });
+        },
+
+        removeAnimation: (name: AnimationKey) => {
+          set((state) => {
+            engine.removeAnimation(state.spriteData, name);
+          });
+        },
+
+        renameAnimation: (oldKey: AnimationKey, newKey: AnimationKey) => {
+          set((state) => {
+            engine.renameAnimation(state.spriteData, oldKey, newKey);
+          });
+        },
+
+        currentAnimationKey: Object.keys(initialSpriteData.animations)[0],
+        setCurrentAnimationKey: (name) => set({ currentAnimationKey: name }),
 
         currentFrameIndex: 0,
         setCurrentFrameIndex: (index) => set({ currentFrameIndex: index }),
@@ -120,7 +139,7 @@ export const useEditorStore = create<EditorStore>()(
           themeName: state.themeName,
           layout: state.layout,
           spriteData: state.spriteData,
-          currentAnimationName: state.currentAnimationName,
+          currentAnimationName: state.currentAnimationKey,
           currentFrameIndex: state.currentFrameIndex,
           currentYIndex: state.currentSlice,
         }),
