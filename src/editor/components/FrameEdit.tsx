@@ -1,39 +1,17 @@
 import React from 'react';
 import { Box, Group } from '@mantine/core';
 import { APP_BORDER_STYLE } from '../utils/styles';
-import { useEditorStore } from '../store/useEditorStore';
-import CompactButton from './input/CompactButton';
+import ColorSelect from './frameEdit/ColorSelect';
+import SliceEdit from './frameEdit/SliceEdit';
 
 export default function FrameEdit() {
-  const palette = useEditorStore((s) => s.spriteData.palette);
   return (
-    <Group h='100%' gap={0}>
+    <Group h='100%' gap={0} preventGrowOverflow={true}>
       <Box h='100%' w={250} style={{ borderRight: APP_BORDER_STYLE }}>
         abc
       </Box>
-      <Box
-        p={'xs'}
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          flexDirection: 'column',
-          height: '100%', // ← fixed height required for vertical fill
-          width: 'fit-content',
-          overflow: 'auto', // optional
-          borderRight: APP_BORDER_STYLE,
-        }}
-      >
-        {Object.values(palette).map((mat, i) => (
-          <CompactButton
-            key={i}
-            size={'md'}
-            color={mat.color ?? 'transparent'}
-            style={{
-              margin: 2,
-            }}
-          />
-        ))}
-      </Box>
+      <ColorSelect />
+      <SliceEdit />
     </Group>
   );
 }

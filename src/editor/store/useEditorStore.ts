@@ -59,8 +59,8 @@ interface EditorStore {
   currentFrameIndex: number;
   setCurrentFrameIndex: (index: number) => void;
 
-  currentSlice: number;
-  setCurrentSlice: (index: number) => void;
+  currentSliceIndex: number;
+  setCurrentSliceIndex: (index: number) => void;
 
   currentMaterialIndex: MaterialIndex;
   setCurrentMaterialIndex: (index: MaterialIndex) => void;
@@ -133,8 +133,8 @@ export const useEditorStore = create<EditorStore>()(
         currentFrameIndex: 0,
         setCurrentFrameIndex: (index) => set({ currentFrameIndex: index }),
 
-        currentSlice: 0,
-        setCurrentSlice: (index) => set({ currentSlice: index }),
+        currentSliceIndex: 0,
+        setCurrentSliceIndex: (index) => set({ currentSliceIndex: index }),
 
         currentMaterialIndex: 0,
         setCurrentMaterialIndex: (index) => set({ currentMaterialIndex: index }),
@@ -147,7 +147,7 @@ export const useEditorStore = create<EditorStore>()(
           spriteData: state.spriteData,
           currentAnimationName: state.currentAnimationKey,
           currentFrameIndex: state.currentFrameIndex,
-          currentYIndex: state.currentSlice,
+          currentYIndex: state.currentSliceIndex,
         }),
       }
     )

@@ -1,0 +1,29 @@
+.sliceGrid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;           // ← this makes it fill remaining space in the Group
+  height: 100%;      // ensure height in flex column context
+  overflow: hidden;
+
+  .gridContainer {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    //gap: 1px; // optional
+
+    grid-template-columns: repeat(var(--cols), 1fr);
+    grid-template-rows: repeat(var(--rows), 1fr);
+    .cell {
+      aspect-ratio: 1;
+      width: 100%;
+      border: 1px solid var(--mantine-color-body);
+
+      &:hover {
+        border-color: var(--mantine-primary-color-filled);
+      }
+    }
+  }
+}
+
+
