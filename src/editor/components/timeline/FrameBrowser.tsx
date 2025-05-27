@@ -14,13 +14,15 @@ import { useTimeout } from '@mantine/hooks';
 
 import './frameBrowser.scss';
 import CompactButton from '../input/CompactButton';
-import type { Animation } from '../../../engine/types/SpriteData';
+import { useEditorStore } from '../../store/useEditorStore';
 
-interface FrameBrowserProps {
-  animation: Animation;
-}
+export default function FrameBrowser() {
+  const animationKey = useEditorStore((s) => s.currentAnimationKey);
+  const animation = useEditorStore((s) => s.spriteData.animations[animationKey]);
+  const frameIndex = useEditorStore((s) => s.currentFrameIndex);
+  const setFrameIndex = useEditorStore((s) => s.setCurrentFrameIndex);
+  const addFrame = useEditorStore((s) => s.addFrame);
 
-export default function FrameBrowser({ animation }: FrameBrowserProps) {
   const [opened, setOpened] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const isOverTrigger = useRef<boolean>(false);
@@ -58,8 +60,9 @@ export default function FrameBrowser({ animation }: FrameBrowserProps) {
   const handleDuplicate = () => {
     console.log('duplicate', page.current);
   };
-  const handleAdd = () => {
-    console.log('add', page.current);
+  const handleAdd = (pos: number) => {
+    console.log('add', pos);
+    addFrame(animationKey, pos);
   };
   const handleDelete = () => {
     console.log('delete', page.current);
@@ -77,13 +80,13 @@ export default function FrameBrowser({ animation }: FrameBrowserProps) {
           >
             <div className={'left'}>
               <CompactButton
-                icon={<IconPlus size={16} />}
+                content={<IconPlus size={16} />}
                 tooltip='Add Empty Frame'
                 tooltipPosition='left'
-                onClick={handleAdd}
+                onClick={() => handleAdd(page.current - 1)}
               />
               <CompactButton
-                icon={<IconCopy size={16} />}
+                content={<IconCopy size={16} />}
                 tooltip='Duplicate Frame'
                 tooltipPosition='left'
                 onClick={handleDuplicate}
@@ -92,13 +95,13 @@ export default function FrameBrowser({ animation }: FrameBrowserProps) {
             </div>
             <div className={'right'}>
               <CompactButton
-                icon={<IconPlus size={16} />}
-                tooltip='Add Empty Frame'
+                content={<IconPlus size={16} />}
+                tooltip='Add Empty Frame b'
                 tooltipPosition='right'
-                onClick={handleAdd}
+                onClick={() => handleAdd(page.current)}
               />
               <CompactButton
-                icon={<IconCopy size={16} />}
+                content={<IconCopy size={16} />}
                 tooltip='Duplicate Frame'
                 tooltipPosition='right'
                 onClick={handleDuplicate}
@@ -107,7 +110,7 @@ export default function FrameBrowser({ animation }: FrameBrowserProps) {
             </div>
 
             <CompactButton
-              icon={<IconTrash size={16} />}
+              content={<IconTrash size={16} />}
               color='red'
               className={'delete'}
               onClick={handleDelete}
@@ -117,6 +120,7 @@ export default function FrameBrowser({ animation }: FrameBrowserProps) {
       )}
 
       <Pagination
+        className={'pagination'}
         withEdges
         nextIcon={IconArrowRight}
         previousIcon={IconArrowLeft}
@@ -124,9 +128,14 @@ export default function FrameBrowser({ animation }: FrameBrowserProps) {
         lastIcon={IconArrowBarToRight}
         dotsIcon={IconGripHorizontal}
         total={animation.frames.length}
-        defaultValue={1}
+        value={frameIndex + 1}
         size='md'
         gap={2}
+        boundaries={100}
+        siblings={100}
+        onChange={(value) => {
+          setFrameIndex(value - 1);
+        }}
         getItemProps={(hoverPage) => ({
           style: { position: 'relative' },
           onMouseLeave: onTriggerLeave,

@@ -56,9 +56,12 @@ interface EditorStore {
 
   updatePalette: (newPalette: Palette) => void;
 
-  addAnimation: (name: AnimationKey) => void;
-  removeAnimation: (name: AnimationKey) => void;
+  addAnimation: (animationKey: AnimationKey) => void;
+  removeAnimation: (animationKey: AnimationKey) => void;
   renameAnimation: (oldKey: AnimationKey, newKey: AnimationKey) => void;
+
+  addFrame: (animationKey: AnimationKey, pos?: number) => void;
+  setFrameTime: (animationKey: AnimationKey, frameIndex: number, time: number) => void;
 
   currentAnimationKey: string;
   setCurrentAnimationKey: (name: string) => void;
@@ -91,13 +94,11 @@ export const useEditorStore = create<EditorStore>()(
             state.spriteData.name = name;
           });
         },
-
         setSpriteFrameTime: (frameTime: number) => {
           set((state) => {
             state.spriteData.frameTime = frameTime;
           });
         },
-
         resizeSprite: (newDimensions: Dimensions) => {
           set((state) => {
             engine.resizeSprite(state.spriteData, newDimensions);
@@ -110,8 +111,7 @@ export const useEditorStore = create<EditorStore>()(
           });
           set((state) => ({ voxelVersion: state.voxelVersion + 1 }));
         },
-
-        addStroke: (animationKey, frameIndex, edits) =>
+        addStroke: (animationKey, frameIndex, edits) => {
           set((state) => {
             edits.forEach(({ x, y, z, material }) => {
               setVoxel(state.spriteData, animationKey, frameIndex, x, y, z, material);
@@ -119,7 +119,8 @@ export const useEditorStore = create<EditorStore>()(
 
             state.voxelVersion++; // mutate directly
             // optionally: add stroke to history
-          }),
+          });
+        },
 
         voxelVersion: 0,
 
@@ -134,16 +135,27 @@ export const useEditorStore = create<EditorStore>()(
             engine.addAnimation(state.spriteData, name);
           });
         },
-
         removeAnimation: (name: AnimationKey) => {
           set((state) => {
             engine.removeAnimation(state.spriteData, name);
           });
         },
-
         renameAnimation: (oldKey: AnimationKey, newKey: AnimationKey) => {
           set((state) => {
             engine.renameAnimation(state.spriteData, oldKey, newKey);
+          });
+        },
+
+        addFrame: (animationKey, pos = undefined) => {
+          set((state) => {
+            engine.addFrame(state.spriteData, animationKey, 0, pos);
+          });
+          // optionally: add frame to history
+          // optionally: add frame to undo/redo stack
+        },
+        setFrameTime: (animationKey, frameIndex, time) => {
+          set((state) => {
+            engine.setFrameTime(state.spriteData, animationKey, frameIndex, time);
           });
         },
 

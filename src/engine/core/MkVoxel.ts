@@ -9,6 +9,7 @@ import { createSprite, resizeFrameVoxels } from './utils/sprite';
 import { setVoxel } from './utils/voxel';
 import { error, log } from './utils/log';
 import { createAnimation, renameAnimation } from './utils/animation';
+import { addFrame, setFrameTime } from './utils/frame';
 
 export class MkVoxel {
   private sprites: Map<SpriteId, SpriteData> = new Map();
@@ -55,6 +56,14 @@ export class MkVoxel {
 
   renameAnimation(sprite: SpriteData, oldKey: AnimationKey, newKey: AnimationKey): void {
     renameAnimation(sprite, oldKey, newKey);
+  }
+
+  addFrame(sprite: SpriteData, animationKey: AnimationKey, fill: MaterialIndex = 0, pos?: number) {
+    addFrame(sprite, animationKey, fill, pos);
+  }
+
+  setFrameTime(sprite: SpriteData, animationKey: AnimationKey, frameIndex: number, time: number) {
+    setFrameTime(sprite, animationKey, frameIndex, time);
   }
 
   setVoxel(

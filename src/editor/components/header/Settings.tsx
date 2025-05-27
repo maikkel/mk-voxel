@@ -13,7 +13,7 @@ export default function Settings() {
   return (
     <Popover position='bottom' withArrow shadow='md' trapFocus={false}>
       <Popover.Target>
-        <CompactButton icon={<IconSettings size={20} />} size='lg' variant={'subtle'} />
+        <CompactButton content={<IconSettings size={20} />} size='lg' variant={'subtle'} />
       </Popover.Target>
       <Popover.Dropdown>
         <Select

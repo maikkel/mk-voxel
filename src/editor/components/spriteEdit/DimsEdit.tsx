@@ -34,6 +34,8 @@ export default function DimsEdit() {
           min={1}
           max={256}
           size={'xs'}
+          allowDecimal={false}
+          allowNegative={false}
           style={{
             flex: 1,
             outline: localDims.x !== spriteData.dimensions.x ? '1px dashed orange' : undefined,
@@ -46,6 +48,8 @@ export default function DimsEdit() {
           min={1}
           max={256}
           size={'xs'}
+          allowDecimal={false}
+          allowNegative={false}
           style={{
             flex: 1,
             outline: localDims.y !== spriteData.dimensions.y ? '1px dashed orange' : undefined,
@@ -58,6 +62,8 @@ export default function DimsEdit() {
           min={1}
           max={256}
           size={'xs'}
+          allowDecimal={false}
+          allowNegative={false}
           style={{
             flex: 1,
             outline: localDims.z !== spriteData.dimensions.z ? '1px dashed orange' : undefined,
@@ -65,7 +71,7 @@ export default function DimsEdit() {
         />
         <CompactButton
           tooltip='Reset'
-          icon={<IconRestore size={14} />}
+          content={<IconRestore size={14} />}
           size='md'
           disabled={!isDirty}
           onClick={() => setLocalDims(spriteData.dimensions)}
@@ -73,7 +79,7 @@ export default function DimsEdit() {
 
         <CompactButton
           tooltip='Apply'
-          icon={<IconCheck size={14} />}
+          content={<IconCheck size={14} />}
           color='green'
           size='md'
           disabled={!isDirty}

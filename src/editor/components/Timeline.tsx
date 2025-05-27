@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Group, Input, Select, TextInput } from '@mantine/core';
+import { Box, Group, Input, ScrollArea, Select, TextInput } from '@mantine/core';
 import { IconCancel, IconCheck, IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
 import CompactButton from './input/CompactButton';
 import FrameBrowser from './timeline/FrameBrowser';
@@ -26,7 +26,7 @@ export function Timeline() {
       </Box>
       {Object.keys(animations).length > 1 && !checked && (
         <CompactButton
-          icon={<IconTrash size={14} />}
+          content={<IconTrash size={14} />}
           onClick={(e) => {
             e.stopPropagation();
             removeAnimation(option.value);
@@ -54,97 +54,106 @@ export function Timeline() {
   };
 
   return (
-    <Group>
-      <Group p='xs' pr='xs' align='center' gap='sm' style={{ borderRight: APP_BORDER_STYLE }}>
-        <Input.Label htmlFor='animation-select' size='xs'>
-          Animation
-        </Input.Label>
-
-        {mode === 'select' ? (
-          <Select
-            size='xs'
-            id='animation-select'
-            placeholder='Animation'
-            value={currAnimKey}
-            data={Object.keys(animations)}
-            onChange={(value) => {
-              if (value !== null) setCurrAnimKey(value);
-            }}
-            styles={{
-              input: {
-                width: 120,
-              },
-            }}
-            renderOption={animationOption}
-            comboboxProps={{ width: 250, position: 'bottom-start', size: 'sm' }}
-            maw={120}
-          />
-        ) : (
-          <TextInput
-            size='xs'
-            value={inputValue}
-            onChange={(e) => setInputValue(e.currentTarget.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') apply();
-              if (e.key === 'Escape') setMode('select');
-            }}
-            maw={120}
-            autoFocus
-          />
-        )}
-
-        {mode === 'select' ? (
-          <>
-            <CompactButton
-              tooltip='Rename Animation'
-              icon={<IconEdit size={14} />}
-              onClick={() => {
-                setInputValue(currAnimKey);
-                setMode('rename');
-              }}
-              size='sm'
-            />
-            <CompactButton
-              tooltip='Add Animation'
-              icon={<IconPlus size={14} />}
-              onClick={() => {
-                setInputValue('');
-                setMode('add');
-              }}
-              size='sm'
-            />
-          </>
-        ) : (
-          <>
-            <CompactButton
-              tooltip='Apply'
-              icon={<IconCheck size={14} />}
-              onClick={apply}
-              size='sm'
-              color='green'
-            />
-            <CompactButton
-              tooltip='Cancel'
-              icon={<IconCancel size={14} />}
-              onClick={() => {
-                setMode('select');
-                setInputValue('');
-              }}
-              size='sm'
-              color='red'
-            />
-          </>
-        )}
-      </Group>
-
-      <Box>
-        <Group>
-          <Input.Label htmlFor='frame-control' size='xs'>
-            Frames
+    <ScrollArea>
+      <Group wrap={'nowrap'}>
+        <Group
+          p='xs'
+          pr='xs'
+          align='center'
+          gap='sm'
+          wrap={'nowrap'}
+          style={{ borderRight: APP_BORDER_STYLE }}
+        >
+          <Input.Label htmlFor='animation-select' size='xs' style={{ textWrap: 'nowrap' }}>
+            Animation
           </Input.Label>
-          <FrameBrowser animation={animations[currAnimKey]} />
+
+          {mode === 'select' ? (
+            <Select
+              size='xs'
+              id='animation-select'
+              placeholder='Animation'
+              value={currAnimKey}
+              data={Object.keys(animations)}
+              onChange={(value) => {
+                if (value !== null) setCurrAnimKey(value);
+              }}
+              styles={{
+                input: {
+                  width: 120,
+                },
+              }}
+              renderOption={animationOption}
+              comboboxProps={{ width: 250, position: 'bottom-start', size: 'sm' }}
+              maw={120}
+            />
+          ) : (
+            <TextInput
+              size='xs'
+              value={inputValue}
+              onChange={(e) => setInputValue(e.currentTarget.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') apply();
+                if (e.key === 'Escape') setMode('select');
+              }}
+              maw={120}
+              autoFocus
+            />
+          )}
+
+          {mode === 'select' ? (
+            <>
+              <CompactButton
+                tooltip='Rename Animation'
+                content={<IconEdit size={14} />}
+                onClick={() => {
+                  setInputValue(currAnimKey);
+                  setMode('rename');
+                }}
+                size='sm'
+              />
+              <CompactButton
+                tooltip='Add Animation'
+                content={<IconPlus size={14} />}
+                onClick={() => {
+                  setInputValue('');
+                  setMode('add');
+                }}
+                size='sm'
+              />
+            </>
+          ) : (
+            <>
+              <CompactButton
+                tooltip='Apply'
+                content={<IconCheck size={14} />}
+                onClick={apply}
+                size='sm'
+                color='green'
+              />
+              <CompactButton
+                tooltip='Cancel'
+                content={<IconCancel size={14} />}
+                onClick={() => {
+                  setMode('select');
+                  setInputValue('');
+                }}
+                size='sm'
+                color='red'
+              />
+            </>
+          )}
         </Group>
-      </Box>
-    </Group>
+
+        <Box>
+          <Group wrap={'nowrap'}>
+            <Input.Label htmlFor='frame-control' size='xs' style={{ textWrap: 'nowrap' }}>
+              Frames
+            </Input.Label>
+            <FrameBrowser />
+          </Group>
+        </Box>
+      </Group>
+    </ScrollArea>
   );
 }

@@ -6,7 +6,7 @@ export function createAnimation(dims: Dimensions, name: string): Animation {
   return {
     name: name,
     frameTime: 100,
-    frames: [{ voxels: createFrame(dims) }],
+    frames: [createFrame(dims)],
   };
 }
 

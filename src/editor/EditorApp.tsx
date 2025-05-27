@@ -38,7 +38,7 @@ export default function EditorApp() {
           </Group>
         </AppShell.Header>
         <AppShell.Navbar p={0} style={{ borderRight: APP_BORDER_STYLE_WIDE }}>
-          <ScrollArea p='xs' scrollbars='y'>
+          <ScrollArea p={0} scrollbars='y'>
             <Stack bg='var(--mantine-color-body)' align='stretch' justify='flex-start' gap='md'>
               <SpriteEdit />
               <PaletteEdit />

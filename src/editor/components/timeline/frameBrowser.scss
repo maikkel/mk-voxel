@@ -42,3 +42,7 @@
     right: -12px;
   }
 }
+
+.pagination > div {
+  flex-wrap: nowrap;
+}

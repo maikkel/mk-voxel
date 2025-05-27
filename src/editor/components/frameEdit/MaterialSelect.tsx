@@ -4,10 +4,10 @@ import CompactButton from '../input/CompactButton';
 import { Box } from '@mantine/core';
 import { useEditorStore } from '../../store/useEditorStore';
 
-import styles from './colorSelect.module.scss';
+import styles from './materialSelect.module.scss';
 import clsx from 'clsx';
 
-export default function ColorSelect() {
+export default function MaterialSelect() {
   const palette = useEditorStore((s) => s.spriteData.palette);
   const materialIndex = useEditorStore((s) => s.currentMaterialIndex);
   const setMaterialIndex = useEditorStore((s) => s.setCurrentMaterialIndex);

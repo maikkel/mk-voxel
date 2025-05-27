@@ -1,14 +1,4 @@
-import {
-  ActionIcon,
-  Box,
-  ColorInput,
-  Divider,
-  Group,
-  Stack,
-  Text,
-  TextInput,
-  Tooltip,
-} from '@mantine/core';
+import { ActionIcon, Box, ColorInput, Group, Stack, Text, TextInput, Tooltip } from '@mantine/core';
 import { IconEdit, IconPlus, IconSunLowFilled, IconTrash } from '@tabler/icons-react';
 import { useEditorStore } from '../store/useEditorStore';
 import type { MaterialIndex } from '../../engine/types/SpriteData';
@@ -90,21 +80,19 @@ export default function PaletteEdit() {
   };
 
   return (
-    <Stack gap='xs' w='100%'>
+    <Stack gap='xs' p={'xs'} w='100%'>
       <Group justify='space-between'>
-        <Text fw={600} size='sm'>
+        <Text fw={600} size='xs'>
           Material Palette
         </Text>
 
         <CompactButton
-          icon={<IconPlus size={14} />}
+          content={<IconPlus size={14} />}
           tooltip={'Add Material'}
           size='md'
           onClick={addColor}
         />
       </Group>
-
-      <Divider my={2} />
 
       <Stack gap='xs' w='100%'>
         {keys
@@ -168,7 +156,7 @@ export default function PaletteEdit() {
 
               <Group gap='xs' wrap='nowrap'>
                 <CompactButton
-                  icon={<IconSunLowFilled size={14} />}
+                  content={<IconSunLowFilled size={14} />}
                   tooltip={'Glow'}
                   variant={palette[key].glow ? 'filled' : 'outline'}
                   size='sm'
@@ -176,7 +164,7 @@ export default function PaletteEdit() {
                 />
 
                 <CompactButton
-                  icon={<IconTrash size={14} />}
+                  content={<IconTrash size={14} />}
                   tooltip={'Remove color'}
                   variant='light'
                   color='red'

@@ -8,7 +8,7 @@ import {
 import React from 'react';
 
 type CompactButtonProps = {
-  icon?: React.ReactNode;
+  content?: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   color?: string;
   tooltip?: string;
@@ -25,7 +25,7 @@ type CompactButtonProps = {
 const CompactButton = React.forwardRef<HTMLButtonElement, CompactButtonProps>(
   (
     {
-      icon,
+      content,
       onClick,
       color,
       tooltip,
@@ -51,7 +51,7 @@ const CompactButton = React.forwardRef<HTMLButtonElement, CompactButtonProps>(
         disabled={disabled}
         title={title}
       >
-        {icon}
+        {content}
       </ActionIcon>
     );
 

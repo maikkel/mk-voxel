@@ -5,6 +5,7 @@ import SafeTextInput from './input/SafeTextInput';
 import DimsEdit from './spriteEdit/DimsEdit';
 
 import styles from './spriteEdit.module.scss';
+import { APP_BORDER_STYLE } from '../utils/styles';
 
 export default function SpriteEdit() {
   const spriteName = useEditorStore((s) => s.spriteData.name);
@@ -13,7 +14,7 @@ export default function SpriteEdit() {
   const setSpriteFrameTime = useEditorStore((s) => s.setSpriteFrameTime);
 
   return (
-    <Stack>
+    <Stack p='xs' style={{ borderBottom: APP_BORDER_STYLE }}>
       <Group gap='sm' w={'100%'}>
         <SafeTextInput
           className={styles.spriteNameInput}
@@ -34,7 +35,7 @@ export default function SpriteEdit() {
           value={spriteFrameTime}
           onChange={setSpriteFrameTime}
           min={1}
-          rightSection={'ms'}
+          suffix={' ms'}
           size={'xs'}
           w={120}
         />
