@@ -29,7 +29,7 @@ export default function ColorSelect() {
           return (
             <CompactButton
               key={materialKey}
-              tooltip={mat.name || materialKey.toString()}
+              title={mat.name || materialKey.toString()}
               tooltipPosition={'right'}
               size='md'
               color={mat.color ?? 'transparent'}

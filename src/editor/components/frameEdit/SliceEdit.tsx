@@ -10,7 +10,6 @@ export default function SliceEdit() {
   const animationKey = useEditorStore((s) => s.currentAnimationKey);
   const frameIndex = useEditorStore((s) => s.currentFrameIndex);
   const sliceIndex = useEditorStore((s) => s.currentSliceIndex);
-  const setSliceIndex = useEditorStore((s) => s.setCurrentSliceIndex);
   const frame = useEditorStore((s) => s.spriteData.animations[animationKey].frames[frameIndex]);
   const currentMaterialIndex = useEditorStore((s) => s.currentMaterialIndex);
   const addStroke = useEditorStore((s) => s.addStroke);
@@ -52,14 +51,6 @@ export default function SliceEdit() {
         }}
         onMouseDown={handleMouseDown}
         onContextMenu={(e) => e.preventDefault()}
-        onWheel={(e) => {
-          const delta = -Math.sign(e.deltaY); // 1 = scroll down, -1 = scroll up
-          const next = Math.max(0, Math.min(spriteDimensions.y - 1, sliceIndex + delta));
-
-          if (next !== sliceIndex) {
-            setSliceIndex(next);
-          }
-        }}
       >
         {Array.from({ length: spriteDimensions.x * spriteDimensions.z }).map((_, i) => {
           const x = i % spriteDimensions.x;
@@ -79,6 +70,7 @@ export default function SliceEdit() {
               key={i}
               className={styles.cell}
               style={{ background: color }}
+              title={palette[materialIndex]?.name || palette[materialIndex]?.color || 'Unknown'}
               onMouseDown={(e) => {
                 isPainting.current = true;
                 const material = e.button === 2 ? 0 : currentMaterialIndex;
@@ -99,7 +91,9 @@ export default function SliceEdit() {
                   strokeBuffer.current.push({ x, y: sliceIndex, z, material });
                 }
               }}
-            />
+            >
+              {materialIndex}
+            </Box>
           );
         })}
       </Box>

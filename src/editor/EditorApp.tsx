@@ -63,7 +63,7 @@ export default function EditorApp() {
               <View />
             </Split.Pane>
             <Split.Resizer m={0} size='md' bg='var(--app-shell-border-color)' />
-            <Split.Pane grow minHeight='30%'>
+            <Split.Pane grow minHeight='300px' minWidth='30%'>
               <FrameEdit />
             </Split.Pane>
           </Split>

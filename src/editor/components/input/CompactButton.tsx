@@ -18,6 +18,7 @@ type CompactButtonProps = {
   variant?: ActionIconVariant;
   style?: React.CSSProperties;
   disabled?: boolean;
+  title?: string;
 };
 
 // Use forwardRef to pass ref to ActionIcon
@@ -34,6 +35,7 @@ const CompactButton = React.forwardRef<HTMLButtonElement, CompactButtonProps>(
       variant = 'filled',
       style,
       disabled = false,
+      title,
     },
     ref
   ) => {
@@ -47,6 +49,7 @@ const CompactButton = React.forwardRef<HTMLButtonElement, CompactButtonProps>(
         className={className}
         style={style}
         disabled={disabled}
+        title={title}
       >
         {icon}
       </ActionIcon>

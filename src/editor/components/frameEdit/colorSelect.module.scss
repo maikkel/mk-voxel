@@ -5,10 +5,11 @@
   width: fit-content;
 
   .colorButton {
+    margin: 1px;
     border: 2px solid var(--mantine-color-body);
 
     &.active {
-      outline: 3px solid var(--mantine-primary-color-filled);
+      outline: 2px solid var(--mantine-primary-color-filled);
     }
   }
 }

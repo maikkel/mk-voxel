@@ -4,12 +4,16 @@
   align-items: center;
   justify-content: center;
 
+  label {
+    font-size: 14px;
+  }
+
   /* Special styling for WebKit/Blink */
   input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: 1px solid #000000;
-    height: 36px;
-    width: 16px;
+    height: 50px;
+    width: 26px;
     border-radius: 3px;
     background: #ffffff;
     cursor: pointer;
@@ -21,8 +25,8 @@
   input[type=range]::-moz-range-thumb {
     box-shadow: 1px 1px 1px #000000, 0 0 1px #0d0d0d;
     border: 1px solid #000000;
-    height: 36px;
-    width: 16px;
+    height: 56px;
+    width: 26px;
     border-radius: 3px;
     background: #ffffff;
     cursor: pointer;
@@ -32,11 +36,31 @@
   input[type=range]::-ms-thumb {
     box-shadow: 1px 1px 1px #000000, 0 0 1px #0d0d0d;
     border: 1px solid #000000;
-    height: 36px;
-    width: 16px;
+    height: 50px;
+    width: 26px;
     border-radius: 3px;
     background: #ffffff;
     cursor: pointer;
   }
 
+}
+.canvasBox {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-content: stretch;
+
+  .slicePreview {
+    //width: 20px;
+    //height: 20px;
+    outline: 2px solid var(--app-shell-border-color);
+
+    &:not(:last-child) {
+      margin-bottom: auto; // distributes empty space between
+    }
+
+    &:hover {
+      outline-color: var(--mantine-primary-color-filled) !important;
+    }
+  }
 }
