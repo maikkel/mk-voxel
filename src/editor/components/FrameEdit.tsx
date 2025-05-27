@@ -3,6 +3,7 @@ import { Box, Group } from '@mantine/core';
 import { APP_BORDER_STYLE } from '../utils/styles';
 import ColorSelect from './frameEdit/ColorSelect';
 import SliceEdit from './frameEdit/SliceEdit';
+import SliceSlider from './frameEdit/SliceSlider';
 
 export default function FrameEdit() {
   return (
@@ -11,6 +12,7 @@ export default function FrameEdit() {
         abc
       </Box>
       <ColorSelect />
+      <SliceSlider />
       <SliceEdit />
     </Group>
   );

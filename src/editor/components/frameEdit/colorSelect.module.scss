@@ -1,0 +1,14 @@
+.colorSelectBox {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: fit-content;
+
+  .colorButton {
+    border: 2px solid var(--mantine-color-body);
+
+    &.active {
+      outline: 3px solid var(--mantine-primary-color-filled);
+    }
+  }
+}

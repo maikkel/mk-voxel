@@ -11,6 +11,7 @@ import {
 import { MkVoxel } from '../../engine/core/MkVoxel';
 import type { MantineThemeOverride } from '@mantine/core';
 import { themeBlack, themeBlue, themeGrey } from '../themes/themes';
+import { setVoxel } from '../../engine/core/utils/voxel';
 
 type ThemeName = 'blue' | 'grey' | 'black';
 export type LayoutType = 'vertical' | 'horizontal' | 'auto';
@@ -46,6 +47,12 @@ interface EditorStore {
     z: number,
     mat: MaterialIndex
   ) => void;
+  addStroke: (
+    animationKey: AnimationKey,
+    frameIndex: number,
+    edits: { x: number; y: number; z: number; material: MaterialIndex }[]
+  ) => void;
+  voxelVersion: number;
 
   updatePalette: (newPalette: Palette) => void;
 
@@ -101,7 +108,20 @@ export const useEditorStore = create<EditorStore>()(
           set((state) => {
             engine.setVoxel(state.spriteData, anim, frame, x, y, z, mat);
           });
+          set((state) => ({ voxelVersion: state.voxelVersion + 1 }));
         },
+
+        addStroke: (animationKey, frameIndex, edits) =>
+          set((state) => {
+            edits.forEach(({ x, y, z, material }) => {
+              setVoxel(state.spriteData, animationKey, frameIndex, x, y, z, material);
+            });
+
+            state.voxelVersion++; // mutate directly
+            // optionally: add stroke to history
+          }),
+
+        voxelVersion: 0,
 
         updatePalette: (newPalette: Palette) => {
           set((state) => {

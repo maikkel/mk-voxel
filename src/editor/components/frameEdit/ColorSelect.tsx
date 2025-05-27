@@ -4,32 +4,40 @@ import CompactButton from '../input/CompactButton';
 import { Box } from '@mantine/core';
 import { useEditorStore } from '../../store/useEditorStore';
 
+import styles from './colorSelect.module.scss';
+import clsx from 'clsx';
+
 export default function ColorSelect() {
   const palette = useEditorStore((s) => s.spriteData.palette);
+  const materialIndex = useEditorStore((s) => s.currentMaterialIndex);
+  const setMaterialIndex = useEditorStore((s) => s.setCurrentMaterialIndex);
 
   return (
     <Box
       p={'xs'}
+      h='100%'
+      className={styles.colorSelectBox}
       style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'column',
-        height: '100%', // ← fixed height required for vertical fill
-        width: 'fit-content',
-        overflow: 'auto', // optional
         borderRight: APP_BORDER_STYLE,
       }}
     >
-      {Object.values(palette).map((mat, i) => (
-        <CompactButton
-          key={i}
-          size={'md'}
-          color={mat.color ?? 'transparent'}
-          style={{
-            margin: 2,
-          }}
-        />
-      ))}
+      {Object.entries(palette)
+        .filter(([key]) => Number(key) !== 0)
+        .map(([key, mat]) => {
+          const materialKey = Number(key);
+
+          return (
+            <CompactButton
+              key={materialKey}
+              tooltip={mat.name || materialKey.toString()}
+              tooltipPosition={'right'}
+              size='md'
+              color={mat.color ?? 'transparent'}
+              onClick={() => setMaterialIndex(materialKey)}
+              className={clsx(styles.colorButton, materialKey === materialIndex && styles.active)}
+            />
+          );
+        })}
     </Box>
   );
 }
