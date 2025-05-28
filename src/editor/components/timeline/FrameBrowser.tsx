@@ -22,6 +22,8 @@ export default function FrameBrowser() {
   const frameIndex = useEditorStore((s) => s.currentFrameIndex);
   const setFrameIndex = useEditorStore((s) => s.setCurrentFrameIndex);
   const addFrame = useEditorStore((s) => s.addFrame);
+  const deleteFrame = useEditorStore((s) => s.deleteFrame);
+  const duplicateFrame = useEditorStore((s) => s.duplicateFrame);
 
   const [opened, setOpened] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -57,8 +59,9 @@ export default function FrameBrowser() {
     isOverTooltip.current = false;
   };
 
-  const handleDuplicate = () => {
+  const handleDuplicate = (after: boolean) => {
     console.log('duplicate', page.current);
+    duplicateFrame(animationKey, page.current - 1, after);
   };
   const handleAdd = (pos: number) => {
     console.log('add', pos);
@@ -66,6 +69,7 @@ export default function FrameBrowser() {
   };
   const handleDelete = () => {
     console.log('delete', page.current);
+    deleteFrame(animationKey, page.current - 1);
   };
 
   return (
@@ -89,7 +93,7 @@ export default function FrameBrowser() {
                 content={<IconCopy size={16} />}
                 tooltip='Duplicate Frame'
                 tooltipPosition='left'
-                onClick={handleDuplicate}
+                onClick={() => handleDuplicate(false)}
               />
               <div className={'pointer'}></div>
             </div>
@@ -104,7 +108,7 @@ export default function FrameBrowser() {
                 content={<IconCopy size={16} />}
                 tooltip='Duplicate Frame'
                 tooltipPosition='right'
-                onClick={handleDuplicate}
+                onClick={() => handleDuplicate(true)}
               />
               <div className={'pointer'}></div>
             </div>

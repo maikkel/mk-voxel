@@ -32,7 +32,7 @@ export interface Dimensions {
 }
 
 export interface SpriteData {
-  id: SpriteId;
+  id?: SpriteId;
   name: string;
   palette: Palette;
   dimensions: Dimensions;

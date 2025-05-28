@@ -3,13 +3,11 @@ import { createAnimation } from './animation';
 import type { Dimensions, MaterialIndex, SpriteData } from '../../types/SpriteData';
 
 export function createSprite(
-  id: number,
   name: string,
   dims: Dimensions,
   defaultAnimationName = 'default'
 ): SpriteData {
   return {
-    id,
     name,
     palette: createBasePalette(),
     dimensions: dims,

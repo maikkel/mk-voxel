@@ -12,6 +12,7 @@ import { MkVoxel } from '../../engine/core/MkVoxel';
 import type { MantineThemeOverride } from '@mantine/core';
 import { themeBlack, themeBlue, themeGrey } from '../themes/themes';
 import { setVoxel } from '../../engine/core/utils/voxel';
+import { current } from 'immer';
 
 type ThemeName = 'blue' | 'grey' | 'black';
 export type LayoutType = 'vertical' | 'horizontal' | 'auto';
@@ -24,6 +25,7 @@ const themeMap: Record<ThemeName, MantineThemeOverride> = {
 
 const engine = new MkVoxel();
 const initialSpriteData = engine.createSprite({ x: 3, y: 3, z: 3 }, 'new_sprite');
+engine.addSprite(initialSpriteData);
 
 interface EditorStore {
   themeName: ThemeName;
@@ -61,6 +63,8 @@ interface EditorStore {
   renameAnimation: (oldKey: AnimationKey, newKey: AnimationKey) => void;
 
   addFrame: (animationKey: AnimationKey, pos?: number) => void;
+  deleteFrame: (animationKey: AnimationKey, pos: number) => void;
+  duplicateFrame: (animationKey: AnimationKey, pos: number, after: boolean) => void;
   setFrameTime: (animationKey: AnimationKey, frameIndex: number, time: number) => void;
 
   currentAnimationKey: string;
@@ -102,6 +106,7 @@ export const useEditorStore = create<EditorStore>()(
         resizeSprite: (newDimensions: Dimensions) => {
           set((state) => {
             engine.resizeSprite(state.spriteData, newDimensions);
+            console.log('sd', current(state).spriteData);
           });
         },
 
@@ -152,6 +157,16 @@ export const useEditorStore = create<EditorStore>()(
           });
           // optionally: add frame to history
           // optionally: add frame to undo/redo stack
+        },
+        deleteFrame: (animationKey: AnimationKey, pos: number) => {
+          set((state) => {
+            engine.deleteFrame(state.spriteData, animationKey, pos);
+          });
+        },
+        duplicateFrame: (animationKey: AnimationKey, pos: number) => {
+          set((state) => {
+            engine.duplicateFrame(state.spriteData, animationKey, pos);
+          });
         },
         setFrameTime: (animationKey, frameIndex, time) => {
           set((state) => {
