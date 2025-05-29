@@ -48,30 +48,29 @@ export function deleteFrame(sprite: SpriteData, animationKey: AnimationKey, pos:
 
   animation.frames.splice(pos, 1);
 }
-//
-// export function duplicateFrame(
-//   sprite: SpriteData,
-//   animationKey: AnimationKey,
-//   pos: number,
-//   insertAfter: boolean = true
-// ) {
-//   const animation = sprite.animations[animationKey];
-//   if (!animation) error(`Animation '${animationKey}' not found`);
-//
-//   const original = animation.frames[pos];
-//   if (!original) error(`Frame index ${pos} out of range`);
-//   console.log('ov', original.voxels);
-//
-//   // 👇 Replace behavior: use resize-like "new" assignment
-//   const voxels = new Uint8Array(original.voxels.length);
-//   voxels.set(original.voxels);
-//   const copy: Frame = {
-//     voxels,
-//     time: original.time,
-//   };
-//
-//   animation.frames.splice(insertAfter ? pos + 1 : pos, 0, copy);
-// }
+
+export function duplicateFrame(
+  sprite: SpriteData,
+  animationKey: AnimationKey,
+  pos: number,
+  insertAfter: boolean = true
+) {
+  const animation = sprite.animations[animationKey];
+  if (!animation) error(`Animation '${animationKey}' not found`);
+
+  const original = animation.frames[pos];
+  if (!original) error(`Frame index ${pos} out of range`);
+
+  // 👇 Replace behavior: use resize-like "new" assignment
+  const voxels = new Uint8Array(original.voxels.length);
+  voxels.set(original.voxels);
+  const copy: Frame = {
+    voxels,
+    time: original.time,
+  };
+
+  animation.frames.splice(insertAfter ? pos + 1 : pos, 0, copy);
+}
 
 export function setFrameTime(
   sprite: SpriteData,

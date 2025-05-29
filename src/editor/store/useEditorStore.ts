@@ -1,27 +1,17 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
-import {
+import type {
   AnimationKey,
-  type Dimensions,
-  type MaterialIndex,
-  type Palette,
-  type SpriteData,
+  Dimensions,
+  MaterialIndex,
+  Palette,
+  SpriteData,
 } from '../../engine/types/SpriteData';
 import { MkVoxel } from '../../engine/core/MkVoxel';
-import type { MantineThemeOverride } from '@mantine/core';
-import { themeBlack, themeBlue, themeGrey } from '../themes/themes';
-import { setVoxel } from '../../engine/core/utils/voxel';
-import { current } from 'immer';
+import { withVoxelChange } from '../utils/zustandVoxel';
 
 type ThemeName = 'blue' | 'grey' | 'black';
 export type LayoutType = 'vertical' | 'horizontal' | 'auto';
-
-const themeMap: Record<ThemeName, MantineThemeOverride> = {
-  blue: themeBlue,
-  grey: themeGrey,
-  black: themeBlack,
-};
 
 const engine = new MkVoxel();
 const initialSpriteData = engine.createSprite({ x: 3, y: 3, z: 3 }, 'new_sprite');
@@ -30,12 +20,10 @@ engine.addSprite(initialSpriteData);
 interface EditorStore {
   themeName: ThemeName;
   setThemeName: (name: ThemeName) => void;
-  currentTheme: MantineThemeOverride;
   layout: LayoutType;
   setLayout: (layout: LayoutType) => void;
 
   spriteData: SpriteData;
-
   setSpriteData: (data: SpriteData) => void;
   setSpriteName: (name: string) => void;
   setSpriteFrameTime: (frameTime: number) => void;
@@ -64,7 +52,7 @@ interface EditorStore {
 
   addFrame: (animationKey: AnimationKey, pos?: number) => void;
   deleteFrame: (animationKey: AnimationKey, pos: number) => void;
-  duplicateFrame: (animationKey: AnimationKey, pos: number, after: boolean) => void;
+  duplicateFrame: (animationKey: AnimationKey, pos: number) => void;
   setFrameTime: (animationKey: AnimationKey, frameIndex: number, time: number) => void;
 
   currentAnimationKey: string;
@@ -81,122 +69,129 @@ interface EditorStore {
 }
 
 export const useEditorStore = create<EditorStore>()(
-  immer(
-    persist(
-      (set) => ({
-        themeName: 'grey',
-        setThemeName: (name) => set({ themeName: name, currentTheme: themeMap[name] }),
-        currentTheme: themeMap['grey'],
-        layout: 'auto',
-        setLayout: (layout) => set({ layout: layout }),
+  persist(
+    (set, get) => ({
+      themeName: 'grey',
+      setThemeName: (name) => set({ themeName: name }),
+      layout: 'auto',
+      setLayout: (layout) => set({ layout }),
 
-        spriteData: initialSpriteData,
-        setSpriteData: (data: SpriteData) => set({ spriteData: data }),
+      spriteData: initialSpriteData,
+      setSpriteData: (data) => set({ spriteData: data }),
 
-        setSpriteName: (name: string) => {
-          set((state) => {
-            state.spriteData.name = name;
-          });
-        },
-        setSpriteFrameTime: (frameTime: number) => {
-          set((state) => {
-            state.spriteData.frameTime = frameTime;
-          });
-        },
-        resizeSprite: (newDimensions: Dimensions) => {
-          set((state) => {
-            engine.resizeSprite(state.spriteData, newDimensions);
-            console.log('sd', current(state).spriteData);
-          });
-        },
+      setSpriteName: (name) =>
+        set((state) => ({
+          spriteData: { ...state.spriteData, name },
+        })),
+      setSpriteFrameTime: (frameTime) =>
+        set((state) => ({
+          spriteData: { ...state.spriteData, frameTime },
+        })),
 
-        setVoxel: (anim, frame, x, y, z, mat) => {
-          set((state) => {
-            engine.setVoxel(state.spriteData, anim, frame, x, y, z, mat);
-          });
-          set((state) => ({ voxelVersion: state.voxelVersion + 1 }));
-        },
-        addStroke: (animationKey, frameIndex, edits) => {
-          set((state) => {
-            edits.forEach(({ x, y, z, material }) => {
-              setVoxel(state.spriteData, animationKey, frameIndex, x, y, z, material);
-            });
+      resizeSprite: (newDimensions) => {
+        const updated = structuredClone(get().spriteData);
+        engine.resizeSprite(updated, newDimensions);
+        set({ spriteData: updated });
+      },
 
-            state.voxelVersion++; // mutate directly
-            // optionally: add stroke to history
-          });
-        },
+      setVoxel: (animationKey, frameIndex, x, y, z, mat) => {
+        withVoxelChange((sprite) => {
+          engine.setVoxel(sprite, animationKey, frameIndex, x, y, z, mat);
+        });
+      },
 
-        voxelVersion: 0,
+      addStroke: (animationKey, frameIndex, edits) => {
+        withVoxelChange((sprite) => {
+          edits.forEach(({ x, y, z, material }) => {
+            engine.setVoxel(sprite, animationKey, frameIndex, x, y, z, material);
+          });
+        });
+      },
 
-        updatePalette: (newPalette: Palette) => {
-          set((state) => {
-            state.spriteData.palette = newPalette;
-          });
-        },
+      voxelVersion: 0,
 
-        addAnimation: (name: AnimationKey) => {
-          set((state) => {
-            engine.addAnimation(state.spriteData, name);
-          });
-        },
-        removeAnimation: (name: AnimationKey) => {
-          set((state) => {
-            engine.removeAnimation(state.spriteData, name);
-          });
-        },
-        renameAnimation: (oldKey: AnimationKey, newKey: AnimationKey) => {
-          set((state) => {
-            engine.renameAnimation(state.spriteData, oldKey, newKey);
-          });
-        },
+      updatePalette: (newPalette) =>
+        set((state) => ({
+          spriteData: { ...state.spriteData, palette: newPalette },
+        })),
 
-        addFrame: (animationKey, pos = undefined) => {
-          set((state) => {
-            engine.addFrame(state.spriteData, animationKey, 0, pos);
-          });
-          // optionally: add frame to history
-          // optionally: add frame to undo/redo stack
-        },
-        deleteFrame: (animationKey: AnimationKey, pos: number) => {
-          set((state) => {
-            engine.deleteFrame(state.spriteData, animationKey, pos);
-          });
-        },
-        duplicateFrame: (animationKey: AnimationKey, pos: number) => {
-          set((state) => {
-            engine.duplicateFrame(state.spriteData, animationKey, pos);
-          });
-        },
-        setFrameTime: (animationKey, frameIndex, time) => {
-          set((state) => {
-            engine.setFrameTime(state.spriteData, animationKey, frameIndex, time);
-          });
-        },
+      addAnimation: (name) => {
+        const updated = structuredClone(get().spriteData);
+        engine.addAnimation(updated, name);
+        set({ spriteData: updated });
+      },
+      removeAnimation: (name) => {
+        const updated = structuredClone(get().spriteData);
+        engine.removeAnimation(updated, name);
+        set({ spriteData: updated });
+      },
+      renameAnimation: (oldKey, newKey) => {
+        const updated = structuredClone(get().spriteData);
+        engine.renameAnimation(updated, oldKey, newKey);
+        set({ spriteData: updated });
+      },
 
-        currentAnimationKey: Object.keys(initialSpriteData.animations)[0],
-        setCurrentAnimationKey: (name) => set({ currentAnimationKey: name }),
+      addFrame: (animationKey, pos) => {
+        const updated = structuredClone(get().spriteData);
+        engine.addFrame(updated, animationKey, 0, pos);
+        set({ spriteData: updated });
+      },
+      deleteFrame: (animationKey, pos) => {
+        const updated = structuredClone(get().spriteData);
+        engine.deleteFrame(updated, animationKey, pos);
+        set({ spriteData: updated });
+      },
+      duplicateFrame: (animationKey, pos) => {
+        const updated = structuredClone(get().spriteData);
+        engine.duplicateFrame(updated, animationKey, pos);
+        set({ spriteData: updated });
+      },
+      setFrameTime: (animationKey, frameIndex, time) => {
+        const updated = structuredClone(get().spriteData);
+        engine.setFrameTime(updated, animationKey, frameIndex, time);
+        set({ spriteData: updated });
+      },
 
-        currentFrameIndex: 0,
-        setCurrentFrameIndex: (index) => set({ currentFrameIndex: index }),
+      currentAnimationKey: Object.keys(initialSpriteData.animations)[0],
+      setCurrentAnimationKey: (name) => set({ currentAnimationKey: name }),
 
-        currentSliceIndex: 0,
-        setCurrentSliceIndex: (index) => set({ currentSliceIndex: index }),
+      currentFrameIndex: 0,
+      setCurrentFrameIndex: (index) => set({ currentFrameIndex: index }),
 
-        currentMaterialIndex: 0,
-        setCurrentMaterialIndex: (index) => set({ currentMaterialIndex: index }),
+      currentSliceIndex: 0,
+      setCurrentSliceIndex: (index) => set({ currentSliceIndex: index }),
+
+      currentMaterialIndex: 1,
+      setCurrentMaterialIndex: (index) => set({ currentMaterialIndex: index }),
+    }),
+    {
+      name: 'editor-store',
+      partialize: (state) => ({
+        themeName: state.themeName,
+        layout: state.layout,
+        spriteData: state.spriteData,
+        currentAnimationName: state.currentAnimationKey,
+        currentFrameIndex: state.currentFrameIndex,
+        currentYIndex: state.currentSliceIndex,
+        currentMaterialIndex: state.currentMaterialIndex,
       }),
-      {
-        name: 'editor-store',
-        partialize: (state) => ({
-          themeName: state.themeName,
-          layout: state.layout,
-          spriteData: state.spriteData,
-          currentAnimationName: state.currentAnimationKey,
-          currentFrameIndex: state.currentFrameIndex,
-          currentYIndex: state.currentSliceIndex,
-        }),
-      }
-    )
+      storage: {
+        getItem: (name) => {
+          const str = localStorage.getItem(name);
+          if (!str) return null;
+
+          return JSON.parse(str, (_, value) =>
+            value?.__type === 'Uint8Array' ? new Uint8Array(value.data) : value
+          );
+        },
+        setItem: (name, newValue) => {
+          const json = JSON.stringify(newValue, (_, value) =>
+            value instanceof Uint8Array ? { __type: 'Uint8Array', data: Array.from(value) } : value
+          );
+          localStorage.setItem(name, json);
+        },
+        removeItem: (name) => localStorage.removeItem(name),
+      },
+    }
   )
 );
