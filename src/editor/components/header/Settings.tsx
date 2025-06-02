@@ -1,4 +1,4 @@
-import { Popover, Select } from '@mantine/core';
+import { Box, Input, Popover, SegmentedControl, Stack } from '@mantine/core';
 import React from 'react';
 import CompactButton from '../input/CompactButton';
 import { IconSettings } from '@tabler/icons-react';
@@ -16,28 +16,38 @@ export default function Settings() {
         <CompactButton content={<IconSettings size={20} />} size='lg' variant={'subtle'} />
       </Popover.Target>
       <Popover.Dropdown>
-        <Select
-          label='Theme'
-          value={themeName}
-          onChange={(val) => val && setThemeName(val as 'blue' | 'black')}
-          data={[
-            { value: 'blue', label: 'Blue' },
-            { value: 'grey', label: 'Grey' },
-            { value: 'black', label: 'Black' },
-          ]}
-          comboboxProps={{ withinPortal: false }}
-        />
-        <Select
-          label='Layout'
-          value={layout}
-          onChange={(val) => val && setLayout(val as LayoutType)}
-          data={[
-            { value: 'auto', label: 'Auto (by Aspect Ratio)' },
-            { value: 'horizontal', label: 'Normal' },
-            { value: 'vertical', label: 'Wide' },
-          ]}
-          comboboxProps={{ withinPortal: false }}
-        />
+        <Stack gap='xs'>
+          <Box>
+            <Input.Label size={'sm'}>Theme</Input.Label>
+            <br />
+            <SegmentedControl
+              fullWidth
+              size='sm'
+              value={themeName}
+              onChange={(val) => val && setThemeName(val as 'blue' | 'black')}
+              data={[
+                { value: 'blue', label: 'Blue' },
+                { value: 'grey', label: 'Grey' },
+                { value: 'black', label: 'Black' },
+              ]}
+            />
+          </Box>
+          <Box>
+            <Input.Label size={'sm'}>Layout</Input.Label>
+            <br />
+            <SegmentedControl
+              fullWidth
+              size='sm'
+              value={layout}
+              onChange={(val) => val && setLayout(val as LayoutType)}
+              data={[
+                { value: 'auto', label: 'Auto' },
+                { value: 'horizontal', label: 'Normal' },
+                { value: 'vertical', label: 'Wide' },
+              ]}
+            />
+          </Box>
+        </Stack>
       </Popover.Dropdown>
     </Popover>
   );

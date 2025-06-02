@@ -1,8 +1,14 @@
 import * as BABYLON from '@babylonjs/core';
+import { AxesViewer, Vector3 } from '@babylonjs/core';
+import { SpriteRendererBabylon } from '../../engine/renderers/SpriteRendererBabylon';
+import { useEditorStore } from '../store/useEditorStore';
+import { attachRenderer } from './rendererNotifier';
 
 export function initViewScene(canvas: HTMLCanvasElement): BABYLON.Scene {
   const engine = new BABYLON.Engine(canvas, true);
   const scene = new BABYLON.Scene(engine);
+
+  const spriteData = useEditorStore.getState().spriteData;
 
   const observer = new ResizeObserver(() => {
     engine.resize();
@@ -16,7 +22,7 @@ export function initViewScene(canvas: HTMLCanvasElement): BABYLON.Scene {
     'camera',
     Math.PI / 4,
     Math.PI / 3,
-    5,
+    15,
     BABYLON.Vector3.Zero(),
     scene
   );
@@ -25,13 +31,21 @@ export function initViewScene(canvas: HTMLCanvasElement): BABYLON.Scene {
   // Light
   new BABYLON.HemisphericLight('light', new BABYLON.Vector3(1, 1, 0), scene);
 
-  // ✅ Debug Cube
-  const box = BABYLON.MeshBuilder.CreateBox('debugCube', { size: 1 }, scene);
-  box.position.y = 0.5;
+  const sprite = new SpriteRendererBabylon(scene, spriteData);
+  attachRenderer(sprite);
 
-  const mat = new BABYLON.StandardMaterial('boxMat', scene);
-  mat.diffuseColor = new BABYLON.Color3(0.4, 0.7, 1); // Light blue
-  box.material = mat;
+  // Inside your `initViewScene` after creating scene/camera:
+  const axes = new AxesViewer(scene, 2); // 2 = size of the axes
+
+  const dims = spriteData.dimensions;
+  // Position offset: e.g., move slightly to the side of your sprite
+
+  console.log('dims', spriteData.dimensions);
+  console.log(-dims.x / 2 - 1, -dims.y / 2 - 1, -dims.z / 2 - 1);
+  const offset = new Vector3(-dims.x / 2 - 1, -dims.y / 2 - 1, -dims.z / 2 - 1); // adjust as needed
+  axes.xAxis.position = offset;
+  axes.yAxis.position = offset;
+  axes.zAxis.position = offset;
 
   // Render loop
   engine.runRenderLoop(() => scene.render());

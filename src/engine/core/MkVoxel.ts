@@ -1,6 +1,7 @@
 import {
   AnimationKey,
   Dimensions,
+  type Frame,
   type MaterialIndex,
   SpriteData,
   SpriteId,
@@ -8,8 +9,8 @@ import {
 import { createSprite, resizeFrameVoxels } from './utils/sprite';
 import { setVoxel } from './utils/voxel';
 import { error, log } from './utils/log';
-import { createAnimation, renameAnimation } from './utils/animation';
-import { addFrame, deleteFrame, duplicateFrame, setFrameTime } from './utils/frame';
+import { createAnimation, nudgeAnimation, renameAnimation } from './utils/animation';
+import { addFrame, deleteFrame, duplicateFrame, nudgeFrame, setFrameTime } from './utils/frame';
 
 export class MkVoxel {
   private sprites: Map<SpriteId, SpriteData> = new Map();
@@ -62,6 +63,16 @@ export class MkVoxel {
     renameAnimation(sprite, oldKey, newKey);
   }
 
+  nudgeAnimation(
+    sprite: SpriteData,
+    animationKey: AnimationKey,
+    dx: number,
+    dy: number,
+    dz: number
+  ) {
+    nudgeAnimation(sprite, animationKey, dx, dy, dz);
+  }
+
   addFrame(sprite: SpriteData, animationKey: AnimationKey, fill: MaterialIndex = 0, pos?: number) {
     addFrame(sprite, animationKey, fill, pos);
   }
@@ -81,6 +92,10 @@ export class MkVoxel {
 
   setFrameTime(sprite: SpriteData, animationKey: AnimationKey, frameIndex: number, time: number) {
     setFrameTime(sprite, animationKey, frameIndex, time);
+  }
+
+  nudgeFrame(frame: Frame, dims: Dimensions, x: number, y: number, z: number) {
+    nudgeFrame(frame, dims, x, y, z);
   }
 
   setVoxel(

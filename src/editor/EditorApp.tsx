@@ -16,11 +16,14 @@ export default function EditorApp() {
   const [opened, { toggle }] = useDisclosure();
 
   const layout = useEditorStore((s) => s.layout);
+  const setAspect = useEditorStore((s) => s.setAspect);
 
   const { width, height } = useViewportSize();
   const [debouncedAspect] = useDebouncedValue(width / height, 100);
   const isWide = debouncedAspect > 1.7;
   const splitOrientation = layout === 'auto' ? (isWide ? 'vertical' : 'horizontal') : layout;
+
+  setAspect(splitOrientation === 'vertical' ? 'wide' : 'normal');
 
   return (
     <Box style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>

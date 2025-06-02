@@ -85,3 +85,26 @@ export function setFrameTime(
 
   frame.time = time;
 }
+
+export function nudgeFrame(frame: Frame, dims: Dimensions, dx: number, dy: number, dz: number) {
+  const { x: sizeX, y: sizeY, z: sizeZ } = dims;
+  const newVoxels = new Uint8Array(sizeX * sizeY * sizeZ);
+
+  const getIndex = (x: number, y: number, z: number) => x + y * sizeX + z * sizeX * sizeY;
+
+  for (let z = 0; z < sizeZ; z++) {
+    for (let y = 0; y < sizeY; y++) {
+      for (let x = 0; x < sizeX; x++) {
+        const sourceX = (x - dx + sizeX) % sizeX;
+        const sourceY = (y - dy + sizeY) % sizeY;
+        const sourceZ = (z - dz + sizeZ) % sizeZ;
+
+        const srcIndex = getIndex(sourceX, sourceY, sourceZ);
+        const destIndex = getIndex(x, y, z);
+        newVoxels[destIndex] = frame.voxels[srcIndex];
+      }
+    }
+  }
+
+  frame.voxels = newVoxels; // replace the frame voxels
+}

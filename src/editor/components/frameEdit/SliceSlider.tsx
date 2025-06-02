@@ -14,6 +14,8 @@ export default function SliceSlider() {
   const frameIndex = useEditorStore((s) => s.currentFrameIndex);
   const frame = useEditorStore((s) => s.spriteData.animations[animationKey].frames[frameIndex]);
   const palette = useEditorStore((s) => s.spriteData.palette);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _voxelVersion = useEditorStore((s) => s.voxelVersion); // triggers re-render
 
   const previewSize = (spriteDimensions.y * spriteDimensions.z) / 300;
 
