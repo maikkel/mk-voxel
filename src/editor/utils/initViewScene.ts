@@ -1,6 +1,7 @@
 import * as BABYLON from '@babylonjs/core';
 import { AxesViewer, Vector3 } from '@babylonjs/core';
 import { SpriteRendererBabylon } from '../../engine/renderers/SpriteRendererBabylon';
+import { SceneInstrumentation } from '@babylonjs/core/Instrumentation/sceneInstrumentation';
 import { useEditorStore } from '../store/useEditorStore';
 import { attachRenderer } from './rendererNotifier';
 
@@ -8,6 +9,21 @@ export function initViewScene(canvas: HTMLCanvasElement): BABYLON.Scene {
   const engine = new BABYLON.Engine(canvas, true);
   const scene = new BABYLON.Scene(engine);
 
+  const instrumentation = new SceneInstrumentation(scene);
+  instrumentation.captureDrawCalls = true;
+  instrumentation.captureIndices = true;
+  instrumentation.captureVertices = true;
+
+  const debugUi = document.getElementById('babylon-debug-ui')!;
+  setInterval(() => {
+    debugUi.innerText =
+      `FPS: ${engine.getFps().toFixed(1)}\n` +
+      `Draw Calls: ${instrumentation.drawCallsCounter}\n` +
+      `Vertices: ${instrumentation.vertexCount}\n` +
+      `Triangles: ${(instrumentation.indexCount / 3) | 0}`;
+  }, 500);
+
+  scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
   const spriteData = useEditorStore.getState().spriteData;
 
   const observer = new ResizeObserver(() => {

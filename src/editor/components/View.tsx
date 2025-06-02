@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { initViewScene } from '../utils/initViewScene';
 import { AbstractEngine } from '@babylonjs/core';
+import styles from './view.module.scss';
 
 export default function View() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -23,5 +24,12 @@ export default function View() {
     }
   }, []);
 
-  return <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />;
+  return (
+    <>
+      <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+      <div id='babylon-debug-ui' className={styles.babylonDebugUi}>
+        test
+      </div>
+    </>
+  );
 }
