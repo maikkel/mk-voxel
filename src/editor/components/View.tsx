@@ -7,19 +7,15 @@ export default function View() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<AbstractEngine | null>(null);
 
+  console.log('view');
+
   useEffect(() => {
+    console.log('ef');
     if (canvasRef.current) {
       const scene = initViewScene(canvasRef.current);
       engineRef.current = scene.getEngine();
-
-      const observer = new ResizeObserver(() => {
-        engineRef.current?.resize();
-      });
-      observer.observe(canvasRef.current);
-
       return () => {
         engineRef.current?.dispose();
-        observer.disconnect();
       };
     }
   }, []);
@@ -27,8 +23,11 @@ export default function View() {
   return (
     <>
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+      <div id='babylon-fps-ui' className={styles.babylonFpsUi}>
+        fps
+      </div>
       <div id='babylon-debug-ui' className={styles.babylonDebugUi}>
-        test
+        debug
       </div>
     </>
   );

@@ -1,7 +1,19 @@
+.babylonFpsUi {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: green;
+  text-align: right;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px;
+}
+
 .babylonDebugUi {
   position: absolute;
   bottom:0;
   right: 0;
-  border: 1px solid red;
   color: green;
+  text-align: right;
+  padding: 4px;
 }

@@ -7,10 +7,12 @@ import EditorApp from './editor/EditorApp';
 import '@fontsource-variable/roboto'; // Supports weights 100-900
 import ThemeWrapper from './editor/themes/ThemeWrapper';
 
+console.log('main');
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ThemeWrapper>
-      <EditorApp />
-    </ThemeWrapper>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <ThemeWrapper>
+    <EditorApp />
+  </ThemeWrapper>
+  // </React.StrictMode>
 );

@@ -6,22 +6,24 @@ import { useEditorStore } from '../store/useEditorStore';
 import { attachRenderer } from './rendererNotifier';
 
 export function initViewScene(canvas: HTMLCanvasElement): BABYLON.Scene {
-  const engine = new BABYLON.Engine(canvas, true);
+  const engine = new BABYLON.Engine(canvas, true, undefined, true);
   const scene = new BABYLON.Scene(engine);
 
   const instrumentation = new SceneInstrumentation(scene);
-  instrumentation.captureDrawCalls = true;
-  instrumentation.captureIndices = true;
-  instrumentation.captureVertices = true;
 
   const debugUi = document.getElementById('babylon-debug-ui')!;
+  const fpsUi = document.getElementById('babylon-fps-ui')!;
+
+  setInterval(() => {
+    fpsUi.innerText = `FPS: ${engine.getFps().toFixed(1)}\n`;
+  }, 1000);
   setInterval(() => {
     debugUi.innerText =
-      `FPS: ${engine.getFps().toFixed(1)}\n` +
-      `Draw Calls: ${instrumentation.drawCallsCounter}\n` +
-      `Vertices: ${instrumentation.vertexCount}\n` +
-      `Triangles: ${(instrumentation.indexCount / 3) | 0}`;
-  }, 500);
+      `Draw Calls: ${instrumentation.drawCallsCounter.current}\n` +
+      `Vertices: ${scene.getTotalVertices()}\n` +
+      `Faces: ${(scene.getActiveIndices() / 3) | 0}\n` +
+      `Meshes: ${scene.getActiveMeshes().length | 0}`;
+  }, 1000);
 
   scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
   const spriteData = useEditorStore.getState().spriteData;
