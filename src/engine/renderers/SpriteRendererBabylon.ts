@@ -34,11 +34,15 @@ export class SpriteRendererBabylon {
     frame: Frame = this.spriteData.animations[Object.keys(this.spriteData.animations)[0]].frames[0],
   ) {
     this.currentFrame = frame;
-    this.spriteMesh?.dispose();
 
     const vertexData = generateVoxelMesh(frame, this.spriteData.dimensions, this.spriteData.palette);
-    this.spriteMesh = createSpriteMesh(this.scene, vertexData, this.meshParent);
-    this.spriteMesh.material = this.spriteMaterial;
+
+    if (this.spriteMesh) {
+      vertexData.applyToMesh(this.spriteMesh);
+    } else {
+      this.spriteMesh = createSpriteMesh(this.scene, vertexData, this.meshParent);
+      this.spriteMesh.material = this.spriteMaterial;
+    }
   }
 
   updateMaterials(palette: Palette = this.spriteData.palette) {
